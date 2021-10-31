@@ -6,5 +6,5 @@ set -eo pipefail
 . $(dirname $0)/common.sh
 
 # Deploy.
-GreeterAddr=$(deploy Greeter)
-log "Greeter deployed at:" $GreeterAddr
+FizzbuzzAddr=$(deploy Fizzbuzz)
+log "Fizzbuzz deployed at:" $FizzbuzzAddr

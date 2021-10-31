@@ -9,22 +9,19 @@ set -eo pipefail
 . $(dirname $0)/deploy.sh
 
 # get the address
-addr=$(jq -r '.Greeter' out/addresses.json)
+addr=$(jq -r '.Fizzbuzz' out/addresses.json)
 
-# the initial greeting must be empty
-greeting=$(seth call $addr 'greeting()(string)')
-[[ $greeting = "" ]] || error
+# call fizzbuzz
+response=$(seth call $addr 'fizzbuzz(uint256)(string memory)' '3')
+[[ $response = "fizz" ]] || error
 
-# set it to a value
-seth send $addr \
-    'greet(string memory)' '"yo"' \
-    --keystore $TMPDIR/8545/keystore \
-    --password /dev/null
+response=$(seth call $addr 'fizzbuzz(uint256)(string memory)' '5')
+[[ $response = "buzz" ]] || error
 
-sleep 1
+response=$(seth call $addr 'fizzbuzz(uint256)(string memory)' '15')
+[[ $response = "fizzbuzz" ]] || error
 
-# should be set afterwards
-greeting=$(seth call $addr 'greeting()(string)')
-[[ $greeting = "yo" ]] || error
+response=$(seth call $addr 'fizzbuzz(uint256)(string memory)' '11')
+[[ $response = "11" ]] || error
 
 echo "Success."
