@@ -40,7 +40,7 @@ contract TicTacToken {
             _diag(),
             _antiDiag()
         ];
-        for (uint256 i = 0; i < 8; i++) {
+        for (uint256 i = 0; i < wins.length; i++) {
             if (wins[i] == 1) {
                 return X;
             } else if (wins[i] == 8) {
