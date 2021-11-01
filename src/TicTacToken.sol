@@ -8,10 +8,6 @@ contract TicTacToken {
     uint8 internal constant O = 2;
     uint8 internal turns;
 
-    function getBoard() public view returns (uint8[9] memory) {
-        return board;
-    }
-
     function markSpace(uint8 i, uint8 symbol) public {
         require(_validTurn(symbol), "Not your turn");
         require(_validSpace(i), "Invalid space");
@@ -19,6 +15,10 @@ contract TicTacToken {
         require(_emptySpace(i), "Already marked");
         turns++;
         board[i] = symbol;
+    }
+
+    function getBoard() public view returns (uint8[9] memory) {
+        return board;
     }
 
     function currentTurn() public view returns (uint8) {
