@@ -113,4 +113,8 @@ contract TestTTT is TicTacTokenTest {
         ttt.markSpace(1, X);
         ttt.markSpace(2, X);
     }
+
+    function testFail_checks_valid_space() public {
+        ttt.markSpace(10, X);
+    }
 }

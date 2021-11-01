@@ -13,7 +13,8 @@ contract TicTacToken {
     }
 
     function markSpace(uint8 i, uint8 symbol) public {
-        require(_isTurn(symbol), "Not your turn");
+        require(_validTurn(symbol), "Not your turn");
+        require(_validSpace(i), "Invalid space");
         require(_validSymbol(symbol), "Invalid symbol");
         require(_emptySpace(i), "Already marked");
         turns++;
@@ -28,7 +29,11 @@ contract TicTacToken {
         return _checkWins();
     }
 
-    function _isTurn(uint8 symbol) internal view returns (bool) {
+    function _validSpace(uint8 i) internal pure returns (bool) {
+        return i < 9;
+    }
+
+    function _validTurn(uint8 symbol) internal view returns (bool) {
         return currentTurn() == symbol;
     }
 
