@@ -2,27 +2,26 @@
 pragma solidity ^0.8.0;
 
 contract TicTacToken {
-    string[9] public board;
+    uint256[9] public board;
 
-    function getBoard() public view returns (string[9] memory) {
+    uint256 internal constant X = 1;
+    uint256 internal constant O = 2;
+
+    function getBoard() public view returns (uint256[9] memory) {
         return board;
     }
 
-    function markSpace(uint256 i, string calldata symbol) public {
+    function markSpace(uint256 i, uint256 symbol) public {
         require(_validSymbol(symbol), "Invalid symbol");
         require(_emptySpace(i), "Already marked");
         board[i] = symbol;
     }
 
     function _emptySpace(uint256 i) internal view returns (bool) {
-        return _compareString(board[i], "");
+        return board[i] == 0;
     }
 
-    function _validSymbol(string memory symbol) internal pure returns (bool) {
-        return _compareString(symbol, "X") || _compareString(symbol, "O");
-    }
-
-    function _compareString(string memory a, string memory b) internal pure returns (bool) {
-        return keccak256(abi.encodePacked(a)) == keccak256(abi.encodePacked(b));
+    function _validSymbol(uint256 symbol) internal pure returns (bool) {
+        return symbol == X || symbol == O;
     }
 }
