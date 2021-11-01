@@ -38,6 +38,7 @@ contract TestTTT is TicTacTokenTest {
     }
 
     function test_can_mark_space_with_O() public {
+        ttt.markSpace(1, X);
         ttt.markSpace(0, O);
         assertEq(ttt.board(0), O);
     }
@@ -53,28 +54,38 @@ contract TestTTT is TicTacTokenTest {
 
     function test_checks_for_horizontal_win() public {
         ttt.markSpace(0, X);
+        ttt.markSpace(3, O);
         ttt.markSpace(1, X);
+        ttt.markSpace(4, O);
         ttt.markSpace(2, X);
         assertEq(ttt.winner(), X);
     }
 
     function test_checks_for_vertical_win() public {
+        ttt.markSpace(1, X);
         ttt.markSpace(0, O);
+        ttt.markSpace(2, X);
         ttt.markSpace(3, O);
+        ttt.markSpace(4, X);
         ttt.markSpace(6, O);
         assertEq(ttt.winner(), O);
     }
 
     function test_checks_for_diagonal_win() public {
         ttt.markSpace(0, X);
+        ttt.markSpace(1, O);
         ttt.markSpace(4, X);
+        ttt.markSpace(5, O);
         ttt.markSpace(8, X);
         assertEq(ttt.winner(), X);
     }
 
     function test_checks_for_antidiagonal_win() public {
+        ttt.markSpace(1, X);
         ttt.markSpace(2, O);
+        ttt.markSpace(3, X);
         ttt.markSpace(4, O);
+        ttt.markSpace(5, X);
         ttt.markSpace(6, O);
         assertEq(ttt.winner(), O);
     }
@@ -87,5 +98,19 @@ contract TestTTT is TicTacTokenTest {
 
     function test_returns_zero_on_empty_board() public {
         assertEq(ttt.winner(), 0);
+    }
+
+    function test_tracks_current_turn() public {
+        assertEq(ttt.currentTurn(), X);
+        ttt.markSpace(1, X);
+        assertEq(ttt.currentTurn(), O);
+        ttt.markSpace(2, O);
+        assertEq(ttt.currentTurn(), X);
+    }
+
+    function testFail_cannot_mark_same_symbol_twice() public {
+        assertEq(ttt.currentTurn(), X);
+        ttt.markSpace(1, X);
+        ttt.markSpace(2, X);
     }
 }
