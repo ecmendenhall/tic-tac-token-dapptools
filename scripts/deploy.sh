@@ -6,5 +6,5 @@ set -eo pipefail
 . $(dirname $0)/common.sh
 
 # Deploy.
-FizzbuzzAddr=$(deploy Fizzbuzz)
-log "Fizzbuzz deployed at:" $FizzbuzzAddr
+TicTacTokenAddr=$(deploy TicTacToken)
+log "TicTacToken deployed at:" $TicTacTokenAddr
