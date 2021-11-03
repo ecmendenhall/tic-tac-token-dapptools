@@ -26,6 +26,10 @@ size   :; ./scripts/contract-size.sh ${contract}
 # Deployment helpers
 deploy :; @./scripts/deploy.sh
 
+# local
+deploy-local: export ETH_RPC_URL = http://localhost:8545
+deploy-local: deploy
+
 # mainnet
 deploy-mainnet: export ETH_RPC_URL = $(call network,mainnet)
 deploy-mainnet: check-api-key deploy
