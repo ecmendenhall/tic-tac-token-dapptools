@@ -7,6 +7,7 @@ contract TestTTT is TicTacTokenTest {
 
     uint256 X;
     uint256 O;
+    uint256 constant Z = 3;
 
     function setUp() public override {
         super.setUp();
@@ -29,9 +30,43 @@ contract TestTTT is TicTacTokenTest {
         assertTrue(assertBoardsEq(ttt.getBoard(), emptyBoard));
     }
 
-    function test_marks_board() public {
+    function test_marks_board_with_X() public {
         ttt.markBoard(0, X);
         assertEq(ttt.getBoard()[0], X);
+    }
+
+    function test_marks_board_with_O() public {
+        ttt.markBoard(1, X);
+        ttt.markBoard(0, O);
+        assertEq(ttt.getBoard()[0], O);
+    }
+
+    function testFail_cannot_mark_board_with_other_symbol() public {
+        ttt.markBoard(0, Z);
+    }
+
+    function testFail_cannot_mark_used_square() public {
+        ttt.markBoard(0, X);
+        ttt.markBoard(0, O);
+    }
+
+    function testFail_cannot_mark_out_of_range() public {
+        ttt.markBoard(9, X);
+    }   
+
+    function testFail_cannot_mark_same_symbol_twice() public {
+        ttt.markBoard(0, X);
+        ttt.markBoard(1, X);
+    }
+
+    function test_get_current_turn() public {
+        assertEq(ttt.currentTurn(), X);
+        ttt.markBoard(0, X);
+        assertEq(ttt.currentTurn(), O);
+        ttt.markBoard(1, O);
+        assertEq(ttt.currentTurn(), X);
+        ttt.markBoard(2, X);
+        assertEq(ttt.currentTurn(), O);
     }
 
     function assertBoardsEq(uint[9] memory array1, uint[9] memory array2) private pure returns (bool) {
