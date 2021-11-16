@@ -4,18 +4,18 @@ pragma solidity ^0.8.0;
 import "./utils/TicTacTokenTest.sol";
 
 contract TestTTT is TicTacTokenTest {
-    uint8 internal constant EMPTY = 0;
-    uint8 internal constant X = 1;
-    uint8 internal constant O = 2;
+    uint256 internal constant EMPTY = 0;
+    uint256 internal constant X = 1;
+    uint256 internal constant O = 2;
 
     function test_has_empty_board() public {
-        for (uint8 i = 0; i < 9; i++) {
+        for (uint256 i = 0; i < 9; i++) {
             assertEq(ttt.board(i), 0);
         }
     }
 
     function test_get_board() public {
-        uint8[9] memory expected = [
+        uint256[9] memory expected = [
             EMPTY,
             EMPTY,
             EMPTY,
@@ -26,8 +26,8 @@ contract TestTTT is TicTacTokenTest {
             EMPTY,
             EMPTY
         ];
-        uint8[9] memory actual = ttt.getBoard();
-        for (uint8 i = 0; i < 9; i++) {
+        uint256[9] memory actual = ttt.getBoard();
+        for (uint256 i = 0; i < 9; i++) {
             assertEq(actual[i], expected[i]);
         }
     }
@@ -116,5 +116,15 @@ contract TestTTT is TicTacTokenTest {
 
     function testFail_checks_valid_space() public {
         ttt.markSpace(10, X);
+    }
+
+    function test_resets_board() public {
+        ttt.markSpace(1, X);
+        ttt.markSpace(2, O);
+        ttt.markSpace(3, X);
+        ttt.reset();
+        for (uint256 i = 0; i < 9; i++) {
+            assertEq(ttt.board(i), 0);
+        }
     }
 }
