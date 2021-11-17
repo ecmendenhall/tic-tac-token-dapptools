@@ -118,13 +118,24 @@ contract TestTTT is TicTacTokenTest {
         ttt.markSpace(10, X);
     }
 
+    function testFail_non_admin_cannot_reset_board() public {
+        player.reset();
+    }
+
     function test_resets_board() public {
         ttt.markSpace(1, X);
         ttt.markSpace(2, O);
         ttt.markSpace(3, X);
-        ttt.reset();
+        admin.reset();
         for (uint256 i = 0; i < 9; i++) {
             assertEq(ttt.board(i), 0);
         }
+    }
+
+    function test_returns_msg_sender() public {
+        assertEq(
+            ttt.msgSender(),
+            address(0xb4c79daB8f259C7Aee6E5b2Aa729821864227e84)
+        );
     }
 }

@@ -38,6 +38,10 @@ deploy-mainnet: check-api-key deploy
 deploy-rinkeby: export ETH_RPC_URL = $(call network,rinkeby)
 deploy-rinkeby: check-api-key deploy
 
+# rinkeby
+deploy-kovan: export ETH_RPC_URL = $(call network,kovan)
+deploy-kovan: check-api-key deploy
+
 # verify on Etherscan
 verify:; ETH_RPC_URL=$(call network,$(network_name)) dapp verify-contract src/TicTacToken.sol:TicTacToken $(contract_address)
 

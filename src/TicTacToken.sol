@@ -3,10 +3,17 @@ pragma solidity ^0.8.0;
 
 contract TicTacToken {
     uint256[9] public board;
+    address public admin;
 
     uint256 internal constant X = 1;
     uint256 internal constant O = 2;
     uint256 internal turns;
+
+    address public lastMsgSender;
+
+    constructor(address _admin) {
+        admin = _admin;
+    }
 
     function markSpace(uint256 i, uint256 symbol) public {
         require(_validTurn(symbol), "Not your turn");
@@ -26,7 +33,13 @@ contract TicTacToken {
     }
 
     function reset() public {
-        delete board; 
+        require(msg.sender == admin, "Must be admin");
+        delete board;
+    }
+
+    function msgSender() public returns (address) {
+        lastMsgSender = msg.sender;
+        return lastMsgSender;
     }
 
     function winner() public view returns (uint256) {
