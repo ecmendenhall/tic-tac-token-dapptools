@@ -22,8 +22,17 @@ contract TicTacToken {
         playerO = _playerO;
     }
 
-    function markSpace(uint256 i) public {
+    modifier onlyAdmin() {
+        require(msg.sender == admin, "Must be admin");
+        _;
+    }
+
+    modifier onlyPlayer() {
         require(_validPlayer(msg.sender), "Unauthorized");
+        _;
+    }
+
+    function markSpace(uint256 i) public {
         require(_validTurn(msg.sender), "Not your turn");
         require(_validSpace(i), "Invalid space");
         require(_emptySpace(i), "Already marked");
@@ -39,8 +48,7 @@ contract TicTacToken {
         return (turns % 2 == 0) ? X : O;
     }
 
-    function reset() public {
-        require(msg.sender == admin, "Must be admin");
+    function reset() public onlyAdmin {
         delete board;
     }
 
