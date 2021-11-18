@@ -4,24 +4,31 @@ pragma solidity ^0.8.0;
 contract TicTacToken {
     uint256[9] public board;
     address public admin;
+    address public playerX;
+    address public playerO;
 
+    uint256 internal constant EMPTY = 0;
     uint256 internal constant X = 1;
     uint256 internal constant O = 2;
     uint256 internal turns;
 
-    address public lastMsgSender;
-
-    constructor(address _admin) {
+    constructor(
+        address _admin,
+        address _playerX,
+        address _playerO
+    ) {
         admin = _admin;
+        playerX = _playerX;
+        playerO = _playerO;
     }
 
-    function markSpace(uint256 i, uint256 symbol) public {
-        require(_validTurn(symbol), "Not your turn");
+    function markSpace(uint256 i) public {
+        require(_validPlayer(msg.sender), "Unauthorized");
+        require(_validTurn(msg.sender), "Not your turn");
         require(_validSpace(i), "Invalid space");
-        require(_validSymbol(symbol), "Invalid symbol");
         require(_emptySpace(i), "Already marked");
         turns++;
-        board[i] = symbol;
+        board[i] = _getSymbol(msg.sender);
     }
 
     function getBoard() public view returns (uint256[9] memory) {
@@ -37,21 +44,26 @@ contract TicTacToken {
         delete board;
     }
 
-    function msgSender() public returns (address) {
-        lastMsgSender = msg.sender;
-        return lastMsgSender;
-    }
-
     function winner() public view returns (uint256) {
         return _checkWins();
+    }
+
+    function _getSymbol(address player) public view returns (uint256) {
+        if (player == playerX) return X;
+        if (player == playerO) return O;
+        return EMPTY;
+    }
+
+    function _validPlayer(address caller) internal view returns (bool) {
+        return caller == playerX || caller == playerO;
     }
 
     function _validSpace(uint256 i) internal pure returns (bool) {
         return i < 9;
     }
 
-    function _validTurn(uint256 symbol) internal view returns (bool) {
-        return currentTurn() == symbol;
+    function _validTurn(address player) internal view returns (bool) {
+        return currentTurn() == _getSymbol(player);
     }
 
     function _emptySpace(uint256 i) internal view returns (bool) {

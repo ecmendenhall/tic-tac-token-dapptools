@@ -12,6 +12,10 @@ contract User {
         ttt = TicTacToken(_ticTacToken);
     }
 
+    function markSpace(uint256 i) public {
+        ttt.markSpace(i);
+    }
+
     function reset() public {
         ttt.reset();
     }
@@ -22,14 +26,24 @@ abstract contract TicTacTokenTest is DSTest {
 
     // contracts
     User internal admin;
-    User internal player;
+    User internal playerX;
+    User internal playerO;
+    User internal other;
     TicTacToken internal ttt;
 
     function setUp() public virtual {
         admin = new User();
-        player = new User();
-        ttt = new TicTacToken(address(admin));
+        playerX = new User();
+        playerO = new User();
+        other = new User();
+        ttt = new TicTacToken(
+            address(admin),
+            address(playerX),
+            address(playerO)
+        );
         admin.setTTT(address(ttt));
-        player.setTTT(address(ttt));
+        playerX.setTTT(address(ttt));
+        playerO.setTTT(address(ttt));
+        other.setTTT(address(ttt));
     }
 }
