@@ -30,6 +30,14 @@ abstract contract TicTacTokenTest is DSTest {
     User internal playerO;
     User internal other;
     TicTacToken internal ttt;
+    User internal admin;
+    User internal nonAdmin;
+
+    User internal playerX;
+    User internal newPlayerX;
+    User internal playerO;
+    User internal newPlayerO;
+    User internal nonPlayer;
 
     function setUp() public virtual {
         admin = new User();

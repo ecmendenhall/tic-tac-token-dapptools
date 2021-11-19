@@ -15,6 +15,9 @@ contract TicTacToken {
     uint256 internal constant X = 1;
     uint256 internal constant O = 2;
     uint256 internal turns;
+    address internal owner;
+    address internal playerX;
+    address internal playerO;
 
     constructor(
         address _admin,
