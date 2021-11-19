@@ -8,7 +8,28 @@ contract TicTacToken {
     uint256 internal constant O = 2;
     uint256 internal turns;
 
-    function markSpace(uint256 i, uint256 symbol) public {
+    address public admin;
+    address public playerOne;
+    address public playerTwo;
+
+
+    modifier onlyAdmin() {
+        require(msg.sender == address(admin), "Unauthorized: Admin only");
+        _;
+    }
+
+    modifier onlyPlayerRole() {
+        require(msg.sender == address(playerOne) || msg.sender == address(playerTwo), "Unauthorized: Player only");
+        _;
+    }
+
+    constructor(address _admin, address _playerOne, address _playerTwo) {
+        admin = _admin;
+        playerOne = _playerOne;
+        playerTwo = _playerTwo;
+    }
+
+    function markSpace(uint256 i, uint256 symbol) public onlyPlayerRole {
         require(_validTurn(symbol), "Not your turn");
         require(_validSpace(i), "Invalid space");
         require(_validSymbol(symbol), "Invalid symbol");
@@ -25,7 +46,7 @@ contract TicTacToken {
         return (turns % 2 == 0) ? X : O;
     }
 
-    function reset() public {
+    function reset() public onlyAdmin {
         delete board; 
     }
 
