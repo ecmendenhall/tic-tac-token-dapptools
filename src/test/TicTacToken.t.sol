@@ -33,66 +33,66 @@ contract TestTTT is TicTacTokenTest {
     }
 
     function test_can_mark_space_with_X() public {
-        ttt.markSpace(0, X);
+        playerO.markSpace(0, X);
         assertEq(ttt.board(0), X);
     }
 
     function test_can_mark_space_with_O() public {
-        ttt.markSpace(1, X);
-        ttt.markSpace(0, O);
+        playerX.markSpace(1, X);
+        playerO.markSpace(0, O);
         assertEq(ttt.board(0), O);
     }
 
     function testFail_cannot_mark_space_with_other_symbol() public {
-        ttt.markSpace(0, 3);
+        nonPlayer.markSpace(0, 3);
     }
 
     function testFail_cannot_overwrite_marked_space() public {
-        ttt.markSpace(0, X);
-        ttt.markSpace(0, O);
+        playerX.markSpace(0, X);
+        playerO.markSpace(0, O);
     }
 
     function test_checks_for_horizontal_win() public {
-        ttt.markSpace(0, X);
-        ttt.markSpace(3, O);
-        ttt.markSpace(1, X);
-        ttt.markSpace(4, O);
-        ttt.markSpace(2, X);
+        playerX.markSpace(0, X);
+        playerO.markSpace(3, O);
+        playerX.markSpace(1, X);
+        playerO.markSpace(4, O);
+        playerX.markSpace(2, X);
         assertEq(ttt.winner(), X);
     }
 
     function test_checks_for_vertical_win() public {
-        ttt.markSpace(1, X);
-        ttt.markSpace(0, O);
-        ttt.markSpace(2, X);
-        ttt.markSpace(3, O);
-        ttt.markSpace(4, X);
-        ttt.markSpace(6, O);
+        playerX.markSpace(1, X);
+        playerO.markSpace(0, O);
+        playerX.markSpace(2, X);
+        playerO.markSpace(3, O);
+        playerX.markSpace(4, X);
+        playerO.markSpace(6, O);
         assertEq(ttt.winner(), O);
     }
 
     function test_checks_for_diagonal_win() public {
-        ttt.markSpace(0, X);
-        ttt.markSpace(1, O);
-        ttt.markSpace(4, X);
-        ttt.markSpace(5, O);
-        ttt.markSpace(8, X);
+        playerX.markSpace(0, X);
+        playerO.markSpace(1, O);
+        playerX.markSpace(4, X);
+        playerO.markSpace(5, O);
+        playerX.markSpace(8, X);
         assertEq(ttt.winner(), X);
     }
 
     function test_checks_for_antidiagonal_win() public {
-        ttt.markSpace(1, X);
-        ttt.markSpace(2, O);
-        ttt.markSpace(3, X);
-        ttt.markSpace(4, O);
-        ttt.markSpace(5, X);
-        ttt.markSpace(6, O);
+        playerX.markSpace(1, X);
+        playerO.markSpace(2, O);
+        playerX.markSpace(3, X);
+        playerO.markSpace(4, O);
+        playerX.markSpace(5, X);
+        playerO.markSpace(6, O);
         assertEq(ttt.winner(), O);
     }
 
     function test_returns_zero_on_no_winner() public {
-        ttt.markSpace(1, X);
-        ttt.markSpace(4, O);
+        playerX.markSpace(1, X);
+        playerO.markSpace(4, O);
         assertEq(ttt.winner(), 0);
     }
 
@@ -102,29 +102,39 @@ contract TestTTT is TicTacTokenTest {
 
     function test_tracks_current_turn() public {
         assertEq(ttt.currentTurn(), X);
-        ttt.markSpace(1, X);
+        playerX.markSpace(1, X);
         assertEq(ttt.currentTurn(), O);
-        ttt.markSpace(2, O);
+        playerO.markSpace(2, O);
         assertEq(ttt.currentTurn(), X);
     }
 
     function testFail_cannot_mark_same_symbol_twice() public {
         assertEq(ttt.currentTurn(), X);
-        ttt.markSpace(1, X);
-        ttt.markSpace(2, X);
+        playerX.markSpace(1, X);
+        playerX.markSpace(2, X);
     }
 
     function testFail_checks_valid_space() public {
-        ttt.markSpace(10, X);
+        playerX.markSpace(10, X);
     }
 
-    function test_resets_board() public {
-        ttt.markSpace(1, X);
-        ttt.markSpace(2, O);
-        ttt.markSpace(3, X);
-        ttt.reset();
+    function test_admin_can_reset_board() public {
+        playerX.markSpace(1, X);
+        playerO.markSpace(2, O);
+        playerX.markSpace(3, X);
+        admin.reset(address(newPlayerX), address(newPlayerO));
         for (uint256 i = 0; i < 9; i++) {
             assertEq(ttt.board(i), 0);
         }
     }
+
+    function testFail_non_admin_cannot_reset_board() public {
+        nonAdmin.reset(address(newPlayerX), address(newPlayerO));
+    }
+
+    function testFail_non_player_cannot_mark_board() public {
+        nonPlayer.markSpace(1, X);
+    }
+
+
 }

@@ -7,8 +7,27 @@ contract TicTacToken {
     uint256 internal constant X = 1;
     uint256 internal constant O = 2;
     uint256 internal turns;
+    address internal owner;
+    address internal playerX;
+    address internal playerO;
 
-    function markSpace(uint256 i, uint256 symbol) public {
+    constructor(address _owner, address _playerX, address _playerO) {
+        owner = _owner;
+        playerX = _playerX;
+        playerO = _playerO;
+    }
+
+    modifier requireAdmin() {
+        require(msg.sender == owner, "Unauthorized");
+        _;
+    }
+
+    modifier requirePlayers() {
+        require(msg.sender == playerX || msg.sender == playerO, "Must be authorized player");
+        _;
+    }
+
+    function markSpace(uint256 i, uint256 symbol) public requirePlayers {
         require(_validTurn(symbol), "Not your turn");
         require(_validSpace(i), "Invalid space");
         require(_validSymbol(symbol), "Invalid symbol");
@@ -25,7 +44,9 @@ contract TicTacToken {
         return (turns % 2 == 0) ? X : O;
     }
 
-    function reset() public {
+    function reset(address _playerX, address _playerO) public requireAdmin {
+        playerX = _playerX;
+        playerO = _playerO;
         delete board; 
     }
 
