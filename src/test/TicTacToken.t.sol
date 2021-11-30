@@ -139,4 +139,45 @@ contract TestTTT is TicTacTokenTest {
     function test_stores_playerO_address() public {
         assertEq(ttt.playerO(), address(playerO));
     }
+
+    function test_playerX_wins_start_at_zero() public {
+        assertEq(ttt.totalWins(address(playerX)), 0);
+    }
+
+    function test_playerO_wins_start_at_zero() public {
+        assertEq(ttt.totalWins(address(playerO)), 0);
+    }
+
+    function test_increments_playerX_win_count_on_win() public {
+        playerX.markSpace(0);
+        playerO.markSpace(3);
+        playerX.markSpace(1);
+        playerO.markSpace(4);
+        playerX.markSpace(2);
+        assertEq(ttt.totalWins(address(playerX)), 1);
+    }
+
+    function test_increments_playerO_win_count_on_win() public {
+        playerX.markSpace(1);
+        playerO.markSpace(0);
+        playerX.markSpace(2);
+        playerO.markSpace(3);
+        playerX.markSpace(4);
+        playerO.markSpace(6);
+        assertEq(ttt.totalWins(address(playerO)), 1);
+    }
+
+    function test_total_games_starts_at_zero() public {
+        assertEq(ttt.totalGames(), 0);
+    }
+
+    function test_increments_total_games_count_on_win() public {
+        playerX.markSpace(0);
+        playerO.markSpace(3);
+        playerX.markSpace(1);
+        playerO.markSpace(4);
+        playerX.markSpace(2);
+        assertEq(ttt.totalGames(), 1);
+    }
+
 }

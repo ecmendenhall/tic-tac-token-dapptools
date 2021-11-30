@@ -2,10 +2,13 @@
 pragma solidity ^0.8.0;
 
 contract TicTacToken {
-    uint256[9] public board;
     address public admin;
     address public playerX;
     address public playerO;
+    uint256 public totalGames;
+
+    uint256[9] public board;
+    mapping(address => uint256) public totalWins;
 
     uint256 internal constant EMPTY = 0;
     uint256 internal constant X = 1;
@@ -38,6 +41,11 @@ contract TicTacToken {
         require(_emptySpace(i), "Already marked");
         turns++;
         board[i] = _getSymbol(msg.sender);
+        if (winner() != 0) {
+            totalGames += 1;
+            address winnerAddress = _getAddress(winner());
+            totalWins[winnerAddress] += 1;
+        }
     }
 
     function getBoard() public view returns (uint256[9] memory) {
@@ -54,6 +62,12 @@ contract TicTacToken {
 
     function winner() public view returns (uint256) {
         return _checkWins();
+    }
+
+    function _getAddress(uint256 symbol) public view returns (address) {
+        if (symbol == X) return playerX;
+        if (symbol == O) return playerO;
+        return address(0);
     }
 
     function _getSymbol(address player) public view returns (uint256) {
