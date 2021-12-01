@@ -18,6 +18,8 @@ contract TicTacToken {
     address internal owner;
     address internal playerX;
     address internal playerO;
+    mapping(address => uint256) internal winCountByAddress;
+    mapping(address => uint256) internal pointCountByAddress;
 
     constructor(
         address _admin,
@@ -135,7 +137,8 @@ contract TicTacToken {
 
     function _row(uint256 row) internal view returns (uint256) {
         require(row <= 2, "Invalid row");
-        return board[row] * board[row + 1] * board[row + 2];
+        uint256 pos = row * 3;
+        return board[pos] * board[pos + 1] * board[pos + 2];
     }
 
     function _col(uint256 col) internal view returns (uint256) {
@@ -149,5 +152,30 @@ contract TicTacToken {
 
     function _antiDiag() internal view returns (uint256) {
         return board[2] * board[4] * board[6];
+    }
+
+    function winCount(address playerAddress) public view returns (uint256) {
+        return winCountByAddress[playerAddress];
+    }
+    function pointCount(address playerAddress) public view returns (uint256) {
+        return pointCountByAddress[playerAddress];
+    }
+
+     function _incrementWinCount(address playerAddress) private {
+        winCountByAddress[playerAddress]++;
+    }
+
+   function _incrementPointCount(address playerAddress) private {
+        pointCountByAddress[playerAddress] += 300;
+    }
+
+    function _getPlayerAddress(uint256 playerSymbol) private view returns (address) {
+        if(playerSymbol == X){
+            return playerX;
+        } else if (playerSymbol == O) {
+            return playerO;
+        } else {
+            return address(0);
+        }
     }
 }
