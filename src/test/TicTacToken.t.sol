@@ -180,4 +180,73 @@ contract TestTTT is TicTacTokenTest {
         assertEq(ttt.totalGames(), 1);
     }
 
+    function test_three_move_win_X() public {
+        // x | x | x
+        // o | o | .
+        // . | . | .
+        playerX.markSpace(0);
+        playerO.markSpace(3);
+        playerX.markSpace(1);
+        playerO.markSpace(4);
+        playerX.markSpace(2);
+        assertEq(ttt.totalPoints(address(playerX)), 300);
+    }
+
+    function test_four_move_win_X() public {
+        // x | x | x
+        // o | o | .
+        // x | o | .
+        playerX.markSpace(0);
+        playerO.markSpace(3);
+        playerX.markSpace(1);
+        playerO.markSpace(4);
+        playerX.markSpace(6);
+        playerO.markSpace(7);
+        playerX.markSpace(2);
+        assertEq(ttt.totalPoints(address(playerX)), 200);
+    }
+
+    function test_five_move_win_X() public {
+        // x | x | x
+        // o | o | x
+        // x | o | o
+        playerX.markSpace(0);
+        playerO.markSpace(3);
+        playerX.markSpace(1);
+        playerO.markSpace(4);
+        playerX.markSpace(6);
+        playerO.markSpace(7);
+        playerX.markSpace(5);
+        playerO.markSpace(8);
+        playerX.markSpace(2);
+        assertEq(ttt.totalPoints(address(playerX)), 100);
+    }
+
+    function test_three_move_win_O() public {
+        // o | x | x
+        // o | x | .
+        // o | . | .
+        playerX.markSpace(1);
+        playerO.markSpace(0);
+        playerX.markSpace(2);
+        playerO.markSpace(3);
+        playerX.markSpace(4);
+        playerO.markSpace(6);
+        assertEq(ttt.totalPoints(address(playerO)), 300);
+    }
+
+    function test_four_move_win_O() public {
+        // o | x | x
+        // o | x | x
+        // o | . | o
+        playerX.markSpace(1);
+        playerO.markSpace(0);
+        playerX.markSpace(2);
+        playerO.markSpace(3);
+        playerX.markSpace(4);
+        playerO.markSpace(8);
+        playerX.markSpace(5);
+        playerO.markSpace(6);
+        assertEq(ttt.totalPoints(address(playerO)), 200);
+    }
 }

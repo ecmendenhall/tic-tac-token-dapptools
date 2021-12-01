@@ -9,6 +9,7 @@ contract TicTacToken {
 
     uint256[9] public board;
     mapping(address => uint256) public totalWins;
+    mapping(address => uint256) public totalPoints;
 
     uint256 internal constant EMPTY = 0;
     uint256 internal constant X = 1;
@@ -45,6 +46,7 @@ contract TicTacToken {
             totalGames += 1;
             address winnerAddress = _getAddress(winner());
             totalWins[winnerAddress] += 1;
+            totalPoints[winnerAddress] += _pointsEarned();
         }
     }
 
@@ -64,13 +66,24 @@ contract TicTacToken {
         return _checkWins();
     }
 
-    function _getAddress(uint256 symbol) public view returns (address) {
+    function _pointsEarned() internal view returns (uint256) {
+        uint256 moves;
+        if (winner() == X) {
+            moves = (turns + 1) / 2;
+        }
+        if (winner() == O) {
+            moves = turns / 2;
+        }
+        return 600 - (moves * 100);
+    }
+
+    function _getAddress(uint256 symbol) internal view returns (address) {
         if (symbol == X) return playerX;
         if (symbol == O) return playerO;
         return address(0);
     }
 
-    function _getSymbol(address player) public view returns (uint256) {
+    function _getSymbol(address player) internal view returns (uint256) {
         if (player == playerX) return X;
         if (player == playerO) return O;
         return EMPTY;
