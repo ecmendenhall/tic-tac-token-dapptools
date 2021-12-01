@@ -136,5 +136,107 @@ contract TestTTT is TicTacTokenTest {
         nonPlayer.markSpace(1, X);
     }
 
+    function test_win_count_is_zero_by_default() public {
+        assertEq(ttt.winCount(address(playerX)), 0);
+    }
 
+    function test_tracks_number_of_wins_for_x() public {
+        assertEq(ttt.winCount(address(playerX)), 0);
+        playerX.markSpace(0, X);
+        playerO.markSpace(3, O);
+        playerX.markSpace(1, X);
+        playerO.markSpace(4, O);
+        playerX.markSpace(2, X);
+        assertEq(ttt.winCount(address(playerX)), 1);
+    }
+
+    function test_tracks_number_of_wins_for_o() public {
+        assertEq(ttt.winCount(address(playerO)), 0);
+        playerX.markSpace(0, X);
+        playerO.markSpace(3, O);
+        playerX.markSpace(1, X);
+        playerO.markSpace(4, O);
+        playerX.markSpace(7, X);
+        playerO.markSpace(5, O);
+        assertEq(ttt.winCount(address(playerO)), 1);
+    }
+
+    function test_win_row_2() public {
+        playerX.markSpace(0, X);
+        playerO.markSpace(3, O);
+        playerX.markSpace(1, X);
+        playerO.markSpace(4, O);
+        playerX.markSpace(7, X);
+        playerO.markSpace(5, O);
+        assertEq(ttt.winner(), O);
+    }
+
+    function test_win_row_3() public {
+        playerX.markSpace(0, X);
+        playerO.markSpace(6, O);
+        playerX.markSpace(1, X);
+        playerO.markSpace(7, O);
+        playerX.markSpace(3, X);
+        playerO.markSpace(8, O);
+        assertEq(ttt.winner(), O);
+    }
+
+    function test_win_col_2() public {
+        playerX.markSpace(0, X);
+        playerO.markSpace(1, O);
+        playerX.markSpace(2, X);
+        playerO.markSpace(4, O);
+        playerX.markSpace(3, X);
+        playerO.markSpace(7, O);
+        assertEq(ttt.winner(), O);
+    }
+
+    function test_win_col_3() public {
+        playerX.markSpace(0, X);
+        playerO.markSpace(2, O);
+        playerX.markSpace(1, X);
+        playerO.markSpace(5, O);
+        playerX.markSpace(4, X);
+        playerO.markSpace(8, O);
+        assertEq(ttt.winner(), O);
+    }
+
+    function test_point_count_is_zero_by_default() public {
+        assertEq(ttt.pointCount(address(playerX)), 0);
+    }
+    function test_tracks_number_of_points_for_x() public {
+        assertEq(ttt.pointCount(address(playerX)), 0);
+        playerX.markSpace(0, X);
+        playerO.markSpace(3, O);
+        playerX.markSpace(1, X);
+        playerO.markSpace(4, O);
+        playerX.markSpace(2, X);
+        assertEq(ttt.pointCount(address(playerX)), 300);
+    }
+
+    function test_fewest_number_of_moves_nets_300_points() public {
+        assertEq(ttt.pointCount(address(playerX)), 0);
+        playerX.markSpace(0, X);
+        playerO.markSpace(3, O);
+        playerX.markSpace(1, X);
+        playerO.markSpace(4, O);
+        playerX.markSpace(2, X);
+        assertEq(ttt.pointCount(address(playerX)), 300);
+    }
+
+    function test_four_move_win_nets_200_points() public {
+        assertEq(ttt.pointCount(address(playerO)), 0);
+        // X|O|X
+        // X|O|X
+        // O|O|.
+        playerX.markSpace(0, X);
+        playerO.markSpace(1, O);
+        playerX.markSpace(2, X);
+        playerO.markSpace(4, O);
+        playerX.markSpace(3, X);
+        playerO.markSpace(6, O);
+        playerX.markSpace(5, X);
+        playerO.markSpace(7, O);
+        assertEq(ttt.pointCount(address(playerO)), 200);
+    }
 }
