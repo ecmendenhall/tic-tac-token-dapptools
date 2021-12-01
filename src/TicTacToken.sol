@@ -11,6 +11,8 @@ contract TicTacToken {
     address internal playerX;
     address internal playerO;
 
+    mapping(address => uint256) internal winsByAddress;
+
     constructor(address _owner, address _playerX, address _playerO) {
         owner = _owner;
         playerX = _playerX;
@@ -34,6 +36,7 @@ contract TicTacToken {
         require(_emptySpace(i), "Already marked");
         turns++;
         board[i] = symbol;
+        _updateScore();
     }
 
     function getBoard() public view returns (uint256[9] memory) {
@@ -47,11 +50,38 @@ contract TicTacToken {
     function reset(address _playerX, address _playerO) public requireAdmin {
         playerX = _playerX;
         playerO = _playerO;
-        delete board; 
+        turns = 0;
+        delete board;
+    }
+
+    function winCount(address player) public view returns (uint256) {
+        return winsByAddress[player];
+    }
+    
+    function pointScore(address player) public view returns (uint256) {
+        if (_hasAnyoneWonIfSoWhoWasIt() == player) {
+            uint256 moves = turns / 2;
+            if(moves == 3) return 300;
+            if(moves == 4) return 200;
+            if(moves == 5) return 100;            
+        }
+        return 0; // loser
     }
 
     function winner() public view returns (uint256) {
         return _checkWins();
+    }
+
+    function _updateScore() internal {
+        if (_hasAnyoneWonIfSoWhoWasIt() != address(0)) {
+            winsByAddress[_hasAnyoneWonIfSoWhoWasIt()]++;
+        }
+    }
+
+    function _hasAnyoneWonIfSoWhoWasIt() internal view returns (address) {
+        if (_checkWins() == X) return playerX;
+        if (_checkWins() == O) return playerO;
+        return address(0);
     }
 
     function _validSpace(uint256 i) internal pure returns (bool) {
