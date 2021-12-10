@@ -1,19 +1,27 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.0;
 
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+
+interface UnicornToken is IERC20 {
+    function mint(address receiver, uint256 amount) external;
+}
+
 contract TicTacToken {
     uint256[9] public board;
 
     uint256 internal constant X = 1;
     uint256 internal constant O = 2;
     uint256 internal turns;
+    UnicornToken internal token;
     address internal owner;
     address internal playerX;
     address internal playerO;
 
     mapping(address => uint256) internal winsByAddress;
 
-    constructor(address _owner, address _playerX, address _playerO) {
+    constructor(UnicornToken _token, address _owner, address _playerX, address _playerO) {
+        token = _token;
         owner = _owner;
         playerX = _playerX;
         playerO = _playerO;
@@ -60,10 +68,11 @@ contract TicTacToken {
     
     function pointScore(address player) public view returns (uint256) {
         if (_hasAnyoneWonIfSoWhoWasIt() == player) {
-            uint256 moves = turns / 2;
-            if(moves == 3) return 300;
-            if(moves == 4) return 200;
-            if(moves == 5) return 100;            
+            return 300;
+            // uint256 moves = turns / 2;
+            // if(moves == 3) return 300;
+            // if(moves == 4) return 200;
+            // if(moves == 5) return 100;            
         }
         return 0; // loser
     }
@@ -73,8 +82,10 @@ contract TicTacToken {
     }
 
     function _updateScore() internal {
-        if (_hasAnyoneWonIfSoWhoWasIt() != address(0)) {
-            winsByAddress[_hasAnyoneWonIfSoWhoWasIt()]++;
+        address winningPlayer = _hasAnyoneWonIfSoWhoWasIt();
+        if (winningPlayer != address(0)) {
+            winsByAddress[winningPlayer]++;
+            token.mint(winningPlayer, 300);
         }
     }
 

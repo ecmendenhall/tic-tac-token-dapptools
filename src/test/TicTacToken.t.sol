@@ -4,9 +4,6 @@ pragma solidity ^0.8.0;
 import "./utils/TicTacTokenTest.sol";
 
 contract TestTTT is TicTacTokenTest {
-    uint256 internal constant EMPTY = 0;
-    uint256 internal constant X = 1;
-    uint256 internal constant O = 2;
 
     function test_has_empty_board() public {
         for (uint256 i = 0; i < 9; i++) {
@@ -168,17 +165,55 @@ contract TestTTT is TicTacTokenTest {
         assertEq(ttt.currentTurn(), X);
     }
 
-    function test_points_to_be_counted() public {
-        playerX.markSpace(1, X);
-        playerO.markSpace(0, O);
-        playerX.markSpace(2, X);
-        playerO.markSpace(3, O);
-        playerX.markSpace(4, X);
-        playerO.markSpace(6, O);
+    function test_winner_receives_token() public {
+        assertEq(token.balanceOf(address(playerO)), 0);
+
+        playGameOWin();
+
+        assertEq(token.balanceOf(address(playerO)), 300);
+    }
+
+    function test_scores_300_points_for_3_moves() public {
+        playGameOWin();
 
         assertEq(ttt.pointScore(address(playerX)), 0);
         assertEq(ttt.pointScore(address(playerO)), 300);
     }
+
+    // function test_scores_200_points_for_4_moves() public {
+    //     // O|X|X
+    //     // O|X|.
+    //     // O|.|.
+    //     playerX.markSpace(1, X);
+    //     playerO.markSpace(0, O);
+    //     playerX.markSpace(2, X);
+    //     playerO.markSpace(3, O);
+    //     playerX.markSpace(4, X);
+    //     playerO.markSpace(7, O);
+    //     playerX.markSpace(5, X);
+    //     playerO.markSpace(6, O);
+
+    //     assertEq(ttt.pointScore(address(playerX)), 0);
+    //     assertEq(ttt.pointScore(address(playerO)), 200);
+    // }
+
+    // function test_scores_100_points_for_5_moves() public {
+    //     // O|X|X
+    //     // O|X|X
+    //     // X|O|O
+    //     playerX.markSpace(1, X);
+    //     playerO.markSpace(0, O);
+    //     playerX.markSpace(2, X);
+    //     playerO.markSpace(3, O);
+    //     playerX.markSpace(4, X);
+    //     playerO.markSpace(7, O);
+    //     playerX.markSpace(5, X);
+    //     playerO.markSpace(8, O);
+    //     playerX.markSpace(6, X);
+
+    //     assertEq(ttt.pointScore(address(playerX)), 100);
+    //     assertEq(ttt.pointScore(address(playerO)), 0);
+    // }
 
     
 

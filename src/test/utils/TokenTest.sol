@@ -13,8 +13,8 @@ contract User {
         token = _token;
     }
 
-    function mint(uint256 amount) public {
-        token.mint(amount);
+    function mint(address to, uint256 amount) public {
+        token.mint(to, amount);
     }
 
     function transfer(address to, uint256 amount) public {

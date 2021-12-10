@@ -25,12 +25,12 @@ contract TestToken is TokenTest {
     }
 
     function test_user_can_mint() public {
-        user1.mint(1000 ether);
+        user1.mint(address(user1), 1000 ether);
         assertEq(token.balanceOf(address(user1)), 1000 ether);
     }
 
     function test_user_can_transfer() public {
-        user1.mint(1000 ether);
+        user1.mint(address(user1), 1000 ether);
         user1.transfer(address(user2), 5 ether);
 
         assertEq(token.balanceOf(address(user1)), 995 ether);
