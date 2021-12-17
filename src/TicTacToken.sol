@@ -1,6 +1,12 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.0;
 
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+
+interface IToken is IERC20 {
+    function mintTTT(uint256 amount) external;
+}
+
 contract TicTacToken {
     address public admin;
     address public playerX;
@@ -14,12 +20,14 @@ contract TicTacToken {
     uint256 internal constant EMPTY = 0;
     uint256 internal constant X = 1;
     uint256 internal constant O = 2;
+    uint256 internal constant POINTS_PER_WIN = 300;
     uint256 internal turns;
     address internal owner;
     address internal playerX;
     address internal playerO;
     mapping(address => uint256) internal winCountByAddress;
     mapping(address => uint256) internal pointCountByAddress;
+    IToken public token;
 
     constructor(
         address _admin,
@@ -29,6 +37,7 @@ contract TicTacToken {
         admin = _admin;
         playerX = _playerX;
         playerO = _playerO;
+        token = IToken(_token);
     }
 
     modifier onlyAdmin() {
@@ -157,20 +166,25 @@ contract TicTacToken {
     function winCount(address playerAddress) public view returns (uint256) {
         return winCountByAddress[playerAddress];
     }
+
     function pointCount(address playerAddress) public view returns (uint256) {
         return pointCountByAddress[playerAddress];
     }
 
-     function _incrementWinCount(address playerAddress) private {
+    function _incrementWinCount(address playerAddress) private {
         winCountByAddress[playerAddress]++;
     }
 
-   function _incrementPointCount(address playerAddress) private {
-        pointCountByAddress[playerAddress] += 300;
+    function _incrementPointCount(address playerAddress) private {
+        pointCountByAddress[playerAddress] += POINTS_PER_WIN;
     }
 
-    function _getPlayerAddress(uint256 playerSymbol) private view returns (address) {
-        if(playerSymbol == X){
+    function _getPlayerAddress(uint256 playerSymbol)
+        private
+        view
+        returns (address)
+    {
+        if (playerSymbol == X) {
             return playerX;
         } else if (playerSymbol == O) {
             return playerO;

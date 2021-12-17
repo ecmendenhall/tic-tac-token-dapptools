@@ -45,7 +45,9 @@ contract TestToken is TokenTest {
         assertEq(token.balanceOf(address(owner)), amountToIncrease);
     }
 
-    function test_transferring_amount_increases_recipient_account_balance() public {
+    function test_transferring_amount_increases_recipient_account_balance()
+        public
+    {
         uint256 amountToTransfer = 5;
 
         assertEq(token.balanceOf(address(user)), 0);
@@ -54,7 +56,6 @@ contract TestToken is TokenTest {
 
         assertEq(token.balanceOf(address(user)), amountToTransfer);
     }
-
 
     function test_transfer_by_a_third_party_contract() public {
         uint256 amountToTransfer = 5;
@@ -66,7 +67,4 @@ contract TestToken is TokenTest {
 
         assertEq(token.balanceOf(address(user)), amountToTransfer);
     }
-
-
-
 }

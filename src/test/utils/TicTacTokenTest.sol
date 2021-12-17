@@ -2,6 +2,7 @@
 pragma solidity ^0.8.0;
 import "ds-test/test.sol";
 
+import "../../Token.sol";
 import "../../TicTacToken.sol";
 import "./Hevm.sol";
 
@@ -30,6 +31,7 @@ abstract contract TicTacTokenTest is DSTest {
     User internal playerO;
     User internal other;
     TicTacToken internal ttt;
+    Token internal token;
     User internal admin;
     User internal nonAdmin;
 
