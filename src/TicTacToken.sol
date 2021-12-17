@@ -20,7 +20,12 @@ contract TicTacToken {
 
     mapping(address => uint256) internal winsByAddress;
 
-    constructor(UnicornToken _token, address _owner, address _playerX, address _playerO) {
+    constructor(
+        UnicornToken _token,
+        address _owner,
+        address _playerX,
+        address _playerO
+    ) {
         token = _token;
         owner = _owner;
         playerX = _playerX;
@@ -33,7 +38,10 @@ contract TicTacToken {
     }
 
     modifier requirePlayers() {
-        require(msg.sender == playerX || msg.sender == playerO, "Must be authorized player");
+        require(
+            msg.sender == playerX || msg.sender == playerO,
+            "Must be authorized player"
+        );
         _;
     }
 
@@ -65,14 +73,14 @@ contract TicTacToken {
     function winCount(address player) public view returns (uint256) {
         return winsByAddress[player];
     }
-    
+
     function pointScore(address player) public view returns (uint256) {
         if (_hasAnyoneWonIfSoWhoWasIt() == player) {
             return 300;
             // uint256 moves = turns / 2;
             // if(moves == 3) return 300;
             // if(moves == 4) return 200;
-            // if(moves == 5) return 100;            
+            // if(moves == 5) return 100;
         }
         return 0; // loser
     }

@@ -36,7 +36,4 @@ contract TestToken is TokenTest {
         assertEq(token.balanceOf(address(user1)), 995 ether);
         assertEq(token.balanceOf(address(user2)), 5 ether);
     }
-
-    
-
 }

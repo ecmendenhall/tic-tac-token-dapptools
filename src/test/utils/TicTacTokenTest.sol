@@ -7,7 +7,6 @@ import "../../TicTacToken.sol";
 import "./Hevm.sol";
 
 contract User {
-
     TicTacToken internal ttt;
 
     function setTTT(address _ttt) public {
@@ -21,12 +20,11 @@ contract User {
     function markSpace(uint256 i, uint256 symbol) public {
         ttt.markSpace(i, symbol);
     }
-
 }
 
 abstract contract TicTacTokenTest is DSTest {
     Hevm internal constant hevm = Hevm(HEVM_ADDRESS);
-    
+
     uint256 internal constant EMPTY = 0;
     uint256 internal constant X = 1;
     uint256 internal constant O = 2;
@@ -52,9 +50,14 @@ abstract contract TicTacTokenTest is DSTest {
         playerO = new User();
         newPlayerO = new User();
         nonPlayer = new User();
-        
+
         token = new Token();
-        ttt = new TicTacToken(UnicornToken(address(token)), address(admin), address(playerX), address(playerO));
+        ttt = new TicTacToken(
+            UnicornToken(address(token)),
+            address(admin),
+            address(playerX),
+            address(playerO)
+        );
 
         admin.setTTT(address(ttt));
         nonAdmin.setTTT(address(ttt));

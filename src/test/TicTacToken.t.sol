@@ -4,7 +4,6 @@ pragma solidity ^0.8.0;
 import "./utils/TicTacTokenTest.sol";
 
 contract TestTTT is TicTacTokenTest {
-
     function test_has_empty_board() public {
         for (uint256 i = 0; i < 9; i++) {
             assertEq(ttt.board(i), 0);
@@ -143,9 +142,9 @@ contract TestTTT is TicTacTokenTest {
         playerX.markSpace(1, X);
         playerO.markSpace(4, O);
         playerX.markSpace(2, X);
-        
+
         admin.reset(address(playerX), address(playerO));
-        
+
         playerX.markSpace(1, X);
         playerO.markSpace(0, O);
         playerX.markSpace(2, X);
@@ -160,7 +159,7 @@ contract TestTTT is TicTacTokenTest {
     function test_reset_internal_turns() public {
         playerX.markSpace(0, X);
         assertEq(ttt.currentTurn(), O);
-        
+
         admin.reset(address(playerX), address(playerO));
         assertEq(ttt.currentTurn(), X);
     }
@@ -214,9 +213,4 @@ contract TestTTT is TicTacTokenTest {
     //     assertEq(ttt.pointScore(address(playerX)), 100);
     //     assertEq(ttt.pointScore(address(playerO)), 0);
     // }
-
-    
-
-
-
 }
