@@ -2,11 +2,11 @@
 pragma solidity ^0.8.0;
 import "ds-test/test.sol";
 
+import "../../Token.sol";
 import "../../TicTacToken.sol";
 import "./Hevm.sol";
 
 contract User {
-
     TicTacToken internal ttt;
 
     function setTTT(address _ttt) public {
@@ -20,7 +20,6 @@ contract User {
     function markSpace(uint256 i, uint256 symbol) public {
         ttt.markSpace(i, symbol);
     }
-
 }
 
 abstract contract TicTacTokenTest is DSTest {
@@ -28,6 +27,7 @@ abstract contract TicTacTokenTest is DSTest {
 
     // contracts
     TicTacToken internal ttt;
+    Token internal token;
     User internal admin;
     User internal nonAdmin;
 
@@ -46,8 +46,15 @@ abstract contract TicTacTokenTest is DSTest {
         playerO = new User();
         newPlayerO = new User();
         nonPlayer = new User();
-        
-        ttt = new TicTacToken(address(admin), address(playerX), address(playerO));
+
+        token = new Token();
+        ttt = new TicTacToken(
+            address(admin),
+            address(playerX),
+            address(playerO),
+            address(token)
+        );
+        token.transferOwnership(address(ttt));
 
         admin.setTTT(address(ttt));
         nonAdmin.setTTT(address(ttt));

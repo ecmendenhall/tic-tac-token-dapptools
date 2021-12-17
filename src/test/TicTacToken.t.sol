@@ -204,6 +204,7 @@ contract TestTTT is TicTacTokenTest {
     function test_point_count_is_zero_by_default() public {
         assertEq(ttt.pointCount(address(playerX)), 0);
     }
+
     function test_tracks_number_of_points_for_x() public {
         assertEq(ttt.pointCount(address(playerX)), 0);
         playerX.markSpace(0, X);
@@ -222,6 +223,20 @@ contract TestTTT is TicTacTokenTest {
         playerO.markSpace(4, O);
         playerX.markSpace(2, X);
         assertEq(ttt.pointCount(address(playerX)), 300);
+    }
+
+    function test_has_token_address() public {
+        assertEq(address(ttt.token()), address(token));
+    }
+
+    function test_sends_tokens_to_winner() public {
+        assertEq(token.balanceOf(address(playerX)), 0);
+        playerX.markSpace(0, X);
+        playerO.markSpace(3, O);
+        playerX.markSpace(1, X);
+        playerO.markSpace(4, O);
+        playerX.markSpace(2, X);
+        assertEq(token.balanceOf(address(playerX)), 3);
     }
 
     // function test_four_move_win_nets_200_points() public {

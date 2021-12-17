@@ -10,5 +10,4 @@ contract Token is ERC20, Ownable {
     function mintTTT(uint256 amount) public onlyOwner {
         _mint(msg.sender, amount);
     }
-
 }

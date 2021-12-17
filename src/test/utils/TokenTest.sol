@@ -6,7 +6,6 @@ import "../../Token.sol";
 import "./Hevm.sol";
 
 contract User {
-
     Token internal token;
 
     constructor(Token _token) {
@@ -24,7 +23,6 @@ contract User {
     function transfer(address recipient, uint256 amount) public {
         token.transfer(recipient, amount);
     }
-
 }
 
 abstract contract TokenTest is DSTest {

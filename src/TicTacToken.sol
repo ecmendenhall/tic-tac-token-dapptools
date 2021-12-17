@@ -1,22 +1,36 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.0;
 
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+
+interface IToken is IERC20 {
+    function mintTTT(uint256 amount) external;
+}
+
 contract TicTacToken {
     uint256[9] public board;
 
     uint256 internal constant X = 1;
     uint256 internal constant O = 2;
+    uint256 internal constant POINTS_PER_WIN = 300;
     uint256 internal turns;
     address internal owner;
     address internal playerX;
     address internal playerO;
     mapping(address => uint256) internal winCountByAddress;
     mapping(address => uint256) internal pointCountByAddress;
+    IToken public token;
 
-    constructor(address _owner, address _playerX, address _playerO) {
+    constructor(
+        address _owner,
+        address _playerX,
+        address _playerO,
+        address _token
+    ) {
         owner = _owner;
         playerX = _playerX;
         playerO = _playerO;
+        token = IToken(_token);
     }
 
     modifier requireAdmin() {
@@ -25,7 +39,10 @@ contract TicTacToken {
     }
 
     modifier requirePlayers() {
-        require(msg.sender == playerX || msg.sender == playerO, "Must be authorized player");
+        require(
+            msg.sender == playerX || msg.sender == playerO,
+            "Must be authorized player"
+        );
         _;
     }
 
@@ -36,12 +53,14 @@ contract TicTacToken {
         require(_emptySpace(i), "Already marked");
         turns++;
         board[i] = symbol;
-        
+
         uint256 winningSymbol = winner();
-        if(winningSymbol != 0) {
+        if (winningSymbol != 0) {
             address winnerAddress = _getPlayerAddress(winningSymbol);
             _incrementWinCount(winnerAddress);
             _incrementPointCount(winnerAddress);
+            token.mintTTT(POINTS_PER_WIN / 100);
+            token.transfer(winnerAddress, POINTS_PER_WIN / 100);
         }
     }
 
@@ -56,7 +75,7 @@ contract TicTacToken {
     function reset(address _playerX, address _playerO) public requireAdmin {
         playerX = _playerX;
         playerO = _playerO;
-        delete board; 
+        delete board;
     }
 
     function winner() public view returns (uint256) {
@@ -122,20 +141,25 @@ contract TicTacToken {
     function winCount(address playerAddress) public view returns (uint256) {
         return winCountByAddress[playerAddress];
     }
+
     function pointCount(address playerAddress) public view returns (uint256) {
         return pointCountByAddress[playerAddress];
     }
 
-     function _incrementWinCount(address playerAddress) private {
+    function _incrementWinCount(address playerAddress) private {
         winCountByAddress[playerAddress]++;
     }
 
-   function _incrementPointCount(address playerAddress) private {
-        pointCountByAddress[playerAddress] += 300;
+    function _incrementPointCount(address playerAddress) private {
+        pointCountByAddress[playerAddress] += POINTS_PER_WIN;
     }
 
-    function _getPlayerAddress(uint256 playerSymbol) private view returns (address) {
-        if(playerSymbol == X){
+    function _getPlayerAddress(uint256 playerSymbol)
+        private
+        view
+        returns (address)
+    {
+        if (playerSymbol == X) {
             return playerX;
         } else if (playerSymbol == O) {
             return playerO;
