@@ -1,0 +1,27 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  preserveAspectRatio="xMinYMin meet"
+  viewBox="0 0 350 350"
+>
+<style>.e{font-size:48pt;letter-spacing:.25em}</style>
+<rect width="100%" height="100%" fill="#303841" />
+<text
+    x="50%"
+    y="25%"
+    class="e"
+    dominant-baseline="middle"
+    text-anchor="middle"
+  >🌼🌼🌼</text>
+  <text
+    x="50%"
+    y="50%"
+    class="e"
+    dominant-baseline="middle"
+    text-anchor="middle"
+  >🍀🌼🌼</text><text
+    x="50%"
+    y="75%"
+    class="e"
+    dominant-baseline="middle"
+    text-anchor="middle"
+  >🌻🌼🌻</text></svg>
