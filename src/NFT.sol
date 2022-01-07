@@ -15,7 +15,7 @@ contract NFT is ERC721 {
     return string(
         abi.encodePacked(
           "data:image/svg+xml;base64,",
-          Base64.encode(boardSVG(board))
+          Base64.encode(bytes(boardSVG(board)))
         )
     );
   }
@@ -48,7 +48,7 @@ contract NFT is ERC721 {
     return
       string(
         abi.encodePacked(
-          '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" viewBox="0 0 350 350"><style>.e{font-family:monospace;font-size:48pt;letter-spacing:.25em;fill:white}</style><rect width="100%" height="100%" fill="#303841" />',
+          '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" viewBox="0 0 350 350"><style>.e{font-family:monospace;font-size:48pt;letter-spacing:.25em;fill:white}</style><rect width="100%" height="100%" fill="#303841"/>',
           firstRow,
           secondRow,
           thirdRow,
