@@ -5,9 +5,9 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract Token is ERC20, Ownable {
-    constructor() ERC20("Triple T Token", "TTT") {}
+    constructor() ERC20("Tic Tac Token", "TTT") {}
 
-    function mintTTT(uint256 amount) public onlyOwner {
-        _mint(msg.sender, amount);
+    function mintTTT(address to, uint256 amount) public onlyOwner {
+        _mint(to, amount);
     }
 }

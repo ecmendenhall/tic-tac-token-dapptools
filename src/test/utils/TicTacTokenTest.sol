@@ -13,12 +13,12 @@ contract User {
         ttt = TicTacToken(_ttt);
     }
 
-    function reset(address playerX, address playerO) public {
-        ttt.reset(playerX, playerO);
-    }
-
-    function markSpace(uint256 i, uint256 symbol) public {
-        ttt.markSpace(i, symbol);
+    function markSpace(
+        uint256 gameId,
+        uint256 i,
+        uint256 symbol
+    ) public {
+        ttt.markSpace(gameId, i, symbol);
     }
 }
 
@@ -48,12 +48,7 @@ abstract contract TicTacTokenTest is DSTest {
         nonPlayer = new User();
 
         token = new Token();
-        ttt = new TicTacToken(
-            address(admin),
-            address(playerX),
-            address(playerO),
-            address(token)
-        );
+        ttt = new TicTacToken(address(admin), address(token));
         token.transferOwnership(address(ttt));
 
         admin.setTTT(address(ttt));

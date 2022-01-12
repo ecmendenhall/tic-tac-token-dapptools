@@ -12,8 +12,8 @@ contract User {
         token = _token;
     }
 
-    function mintTTT(uint256 amount) public {
-        token.mintTTT(amount);
+    function mintTTT(address to, uint256 amount) public {
+        token.mintTTT(to, amount);
     }
 
     function approve(address spender, uint256 amount) public {

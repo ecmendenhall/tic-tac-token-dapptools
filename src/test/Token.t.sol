@@ -5,7 +5,7 @@ import "./utils/TokenTest.sol";
 
 contract TestToken is TokenTest {
     function test_has_name() public {
-        assertEq(token.name(), "Triple T Token");
+        assertEq(token.name(), "Tic Tac Token");
     }
 
     function test_has_symbol() public {
@@ -24,7 +24,7 @@ contract TestToken is TokenTest {
         uint256 amountToIncrease = 10;
 
         assertEq(token.totalSupply(), 0);
-        owner.mintTTT(amountToIncrease);
+        owner.mintTTT(address(owner), amountToIncrease);
 
         assertEq(token.totalSupply(), amountToIncrease);
     }
@@ -33,14 +33,14 @@ contract TestToken is TokenTest {
         uint256 amountToIncrease = 10;
 
         assertEq(token.totalSupply(), 0);
-        user.mintTTT(amountToIncrease);
+        user.mintTTT(address(user), amountToIncrease);
     }
 
     function test_minting_increases_account_balance() public {
         uint256 amountToIncrease = 10;
 
         assertEq(token.balanceOf(address(owner)), 0);
-        owner.mintTTT(amountToIncrease);
+        owner.mintTTT(address(owner), amountToIncrease);
 
         assertEq(token.balanceOf(address(owner)), amountToIncrease);
     }
@@ -51,7 +51,7 @@ contract TestToken is TokenTest {
         uint256 amountToTransfer = 5;
 
         assertEq(token.balanceOf(address(user)), 0);
-        owner.mintTTT(10);
+        owner.mintTTT(address(owner), 10);
         owner.transfer(address(user), amountToTransfer);
 
         assertEq(token.balanceOf(address(user)), amountToTransfer);
@@ -61,7 +61,7 @@ contract TestToken is TokenTest {
         uint256 amountToTransfer = 5;
 
         assertEq(token.balanceOf(address(user)), 0);
-        owner.mintTTT(10);
+        owner.mintTTT(address(owner), 10);
         owner.approve(address(this), amountToTransfer);
         token.transferFrom(address(owner), address(user), amountToTransfer);
 
