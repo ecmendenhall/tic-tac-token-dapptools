@@ -8,10 +8,9 @@ contract TestTTT is TicTacTokenTest {
     uint256 internal constant X = 1;
     uint256 internal constant O = 2;
 
-    function test_has_empty_board() public {
-        for (uint256 i = 0; i < 9; i++) {
-            assertEq(ttt.board(i), 0);
-        }
+    function setUp() public override {
+        super.setUp();
+        ttt.newGame(address(playerX), address(playerO));
     }
 
     function test_get_board() public {
@@ -26,7 +25,7 @@ contract TestTTT is TicTacTokenTest {
             EMPTY,
             EMPTY
         ];
-        uint256[9] memory actual = ttt.getBoard();
+        uint256[9] memory actual = ttt.board(1);
         for (uint256 i = 0; i < 9; i++) {
             assertEq(actual[i], expected[i]);
         }
@@ -93,7 +92,7 @@ contract TestTTT is TicTacTokenTest {
     }
 
     function test_returns_zero_on_empty_board() public {
-        assertEq(ttt.winner(), 0);
+        assertEq(ttt.winner(1), 0);
     }
 
     function test_tracks_current_turn() public {
