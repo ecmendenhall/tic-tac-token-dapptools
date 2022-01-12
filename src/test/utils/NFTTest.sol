@@ -3,6 +3,8 @@ pragma solidity ^0.8.0;
 import "ds-test/test.sol";
 
 import "../../NFT.sol";
+import "../../TicTacToken.sol";
+import "../../Token.sol";
 import "./Hevm.sol";
 
 contract User {
@@ -20,13 +22,19 @@ abstract contract NFTTest is DSTest {
     uint256 internal constant O = 2;
 
     // contracts
+    TicTacToken internal ttt;
+    Token internal token;
     NFT internal nft;
-    User internal user1;
-    User internal user2;
+    User internal admin;
+    User internal playerX;
+    User internal playerO;
 
     function setUp() public virtual {
-        nft = new NFT();
-        user1 = new User(nft);
-        user2 = new User(nft);
+        token = new Token();
+        ttt = new TicTacToken(address(token), address(admin), address(playerX), address(playerO));
+        nft = new NFT(ITicTacToken(address(ttt)));
+        admin = new User(nft);
+        playerX = new User(nft);
+        playerO = new User(nft);
     }
 }

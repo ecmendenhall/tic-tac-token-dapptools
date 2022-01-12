@@ -4,10 +4,9 @@ function encodeMetadata() {
     const svg = fs.readFileSync('./board.svg', {encoding: 'base64'});
     const metadata = JSON.parse(fs.readFileSync('./metadata.json'));
     const encodedImg = `data:image/svg+xml;base64,${svg}`;
-    return encodedImg;
-    // metadata.image = encodedImg;
-    // const encodedJSON = Buffer.from(JSON.stringify(metadata)).toString("base64");
-    // return `data:application/json;base64,${encodedJSON}`;
+    metadata.image = encodedImg;
+    const encodedJSON = Buffer.from(JSON.stringify(metadata)).toString("base64");
+    return `data:application/json;base64,${encodedJSON}`;
 }
 
 console.log(encodeMetadata());
