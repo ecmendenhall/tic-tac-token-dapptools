@@ -52,7 +52,7 @@ abstract contract TicTacTokenTest is DSTest {
 
         nft = new NFT();
         token = new Token();
-        ttt = new TicTacToken(address(admin), address(token), address(nft));
+        ttt = new TicTacToken(address(token), address(nft));
         nft.setTTT(ITicTacToken(address(ttt)));
         nft.transferOwnership(address(ttt));
         token.transferOwnership(address(ttt));

@@ -21,23 +21,15 @@ contract TicTacToken {
     uint256 internal constant O = 2;
     uint256 internal constant POINTS_PER_WIN = 300;
     uint256 internal nextGameId;
-    address internal owner;
     mapping(address => uint256) internal winCountByAddress;
     mapping(address => uint256) internal pointCountByAddress;
 
     constructor(
-        address _owner,
         address _token,
         address _nft
     ) {
-        owner = _owner;
         token = IToken(_token);
         nft = INFT(_nft);
-    }
-
-    modifier requireAdmin() {
-        require(msg.sender == owner, "Unauthorized");
-        _;
     }
 
     modifier requirePlayers(uint256 gameId) {

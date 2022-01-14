@@ -41,7 +41,7 @@ abstract contract NFTTest is DSTest {
     function setUp() public virtual {
         nft = new NFT();
         token = new Token();
-        ttt = new TicTacToken(address(admin), address(token), address(nft));
+        ttt = new TicTacToken(address(token), address(nft));
         nft.setTTT(ITicTacToken(address(ttt)));
         nft.transferOwnership(address(ttt));
         admin = new User(nft);
