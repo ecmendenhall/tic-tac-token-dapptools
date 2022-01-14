@@ -38,8 +38,12 @@ deploy-mainnet: check-api-key deploy
 deploy-rinkeby: export ETH_RPC_URL = $(call network,rinkeby)
 deploy-rinkeby: check-api-key deploy
 
+# kovan
+deploy-kovan: export ETH_RPC_URL = $(call network,kovan)
+deploy-kovan: check-api-key deploy
+
 # verify on Etherscan
-verify:; ETH_RPC_URL=$(call network,$(network_name)) dapp verify-contract src/TicTacToken.sol:TicTacToken $(contract_address)
+verify:; ETH_RPC_URL=$(call network,$(network_name)) dapp verify-contract src/TicTacToken.sol:TicTacToken $(contract_address) "0x8fDf08f116e2A3ddc4863be16A989bFfdc8a0EE8" "0xD8e10F93E574435D08430444207d38F074234301"  
 
 check-api-key:
 ifndef ALCHEMY_API_KEY

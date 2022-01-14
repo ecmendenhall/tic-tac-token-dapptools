@@ -197,7 +197,7 @@ contract TestTTT is TicTacTokenTest {
         playerX.markSpace(1, 1, X);
         playerO.markSpace(1, 4, O);
         playerX.markSpace(1, 2, X);
-        assertEq(ttt.pointCount(address(playerX)), 300);
+        assertEq(ttt.pointCount(address(playerX)), 300 ether);
     }
 
     function test_fewest_number_of_moves_nets_300_points() public {
@@ -207,7 +207,7 @@ contract TestTTT is TicTacTokenTest {
         playerX.markSpace(1, 1, X);
         playerO.markSpace(1, 4, O);
         playerX.markSpace(1, 2, X);
-        assertEq(ttt.pointCount(address(playerX)), 300);
+        assertEq(ttt.pointCount(address(playerX)), 300 ether);
     }
 
     function test_has_token_address() public {
@@ -221,7 +221,7 @@ contract TestTTT is TicTacTokenTest {
         playerX.markSpace(1, 1, X);
         playerO.markSpace(1, 4, O);
         playerX.markSpace(1, 2, X);
-        assertEq(token.balanceOf(address(playerX)), 3);
+        assertEq(token.balanceOf(address(playerX)), 300 ether);
     }
 
     function test_new_game_has_players() public {
