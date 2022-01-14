@@ -2,6 +2,7 @@
 pragma solidity ^0.8.0;
 
 import "./interfaces/IToken.sol";
+import "./interfaces/INFT.sol";
 
 contract TicTacToken {
     struct Game {
@@ -12,7 +13,9 @@ contract TicTacToken {
     }
 
     mapping(uint256 => Game) public games;
+    mapping(uint256 => uint256) public gameIdByTokenId;
     IToken public token;
+    INFT public nft;
 
     uint256 internal constant X = 1;
     uint256 internal constant O = 2;
@@ -22,9 +25,14 @@ contract TicTacToken {
     mapping(address => uint256) internal winCountByAddress;
     mapping(address => uint256) internal pointCountByAddress;
 
-    constructor(address _owner, address _token) {
+    constructor(
+        address _owner,
+        address _token,
+        address _nft
+    ) {
         owner = _owner;
         token = IToken(_token);
+        nft = INFT(_nft);
     }
 
     modifier requireAdmin() {
@@ -34,8 +42,8 @@ contract TicTacToken {
 
     modifier requirePlayers(uint256 gameId) {
         require(
-            msg.sender == games[gameId].playerX ||
-                msg.sender == games[gameId].playerO,
+            msg.sender == _game(gameId).playerX ||
+                msg.sender == _game(gameId).playerO,
             "Must be authorized player"
         );
         _;
@@ -45,6 +53,16 @@ contract TicTacToken {
         nextGameId++;
         games[nextGameId].playerX = _playerX;
         games[nextGameId].playerO = _playerO;
+        mintGameToken(_playerX, _playerO);
+    }
+
+    function mintGameToken(address _playerX, address _playerO) internal {
+        uint256 playerOToken = 2 * nextGameId;
+        uint256 playerXToken = playerOToken - 1;
+        nft.mint(_playerO, playerOToken);
+        nft.mint(_playerX, playerXToken);
+        gameIdByTokenId[playerOToken] = nextGameId;
+        gameIdByTokenId[playerXToken] = nextGameId;
     }
 
     function markSpace(

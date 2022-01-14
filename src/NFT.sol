@@ -2,16 +2,23 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "./interfaces/ITicTacToken.sol";
 import "../lib/Base64.sol";
 
-contract NFT is ERC721 {
+contract NFT is ERC721, Ownable {
     ITicTacToken public ttt;
     uint256 internal constant EMPTY = 0;
     uint256 internal constant X = 1;
     uint256 internal constant O = 2;
 
-    constructor(ITicTacToken _ttt) ERC721("Tic Tac Token NFT", "TTT NFT") {
+    constructor() ERC721("Tic Tac Token NFT", "TTT NFT") {}
+
+    function mint(address to, uint256 tokenId) public onlyOwner {
+        _safeMint(to, tokenId);
+    }
+
+    function setTTT(ITicTacToken _ttt) public onlyOwner {
         ttt = _ttt;
     }
 
@@ -21,7 +28,8 @@ contract NFT is ERC721 {
         override
         returns (string memory)
     {
-        return metadataURI(ttt.board());
+        uint256 currentGame = ttt.gameIdByTokenId(tokenId);
+        return metadataURI(ttt.board(currentGame));
     }
 
     function metadataJSON(uint256[9] memory board)

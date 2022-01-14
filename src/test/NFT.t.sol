@@ -62,4 +62,29 @@ contract TestNFT is NFTTest {
     function test_has_tic_tac_token_contract_address() public {
         assertEq(address(nft.ttt()), address(ttt));
     }
+
+    function mints_token_to_address() public {
+        nft.mint(address(playerX), 1);
+        assertEq(nft.ownerOf(1), address(playerX));
+    }
+
+    function testFail_only_owner_can_mint() public {
+        playerX.mint(address(playerX), 1);
+    }
+
+    function testFail_only_owner_can_set_tt() public {
+        playerX.setTTT(ITicTacToken(address(ttt)));
+    }
+
+    function test_token_renders_empty_board_for_new_game() public {
+        ttt.newGame(address(playerX), address(playerO));
+        assertEq(
+            nft.tokenURI(1),
+            "data:application/json;base64,eyJuYW1lIjoiVFRUIE5GVCIsImRlc2NyaXB0aW9uIjoiVGljIFRhYyBUb2tlbiBORlQiLCJpbWFnZSI6ImRhdGE6aW1hZ2Uvc3ZnK3htbDtiYXNlNjQsUEhOMlp5QjRiV3h1Y3owaWFIUjBjRG92TDNkM2R5NTNNeTV2Y21jdk1qQXdNQzl6ZG1jaUlIQnlaWE5sY25abFFYTndaV04wVW1GMGFXODlJbmhOYVc1WlRXbHVJRzFsWlhRaUlIWnBaWGRDYjNnOUlqQWdNQ0F6TlRBZ016VXdJajQ4YzNSNWJHVStMbVY3Wm05dWRDMW1ZVzFwYkhrNmJXOXViM053WVdObE8yWnZiblF0YzJsNlpUbzBPSEIwTzJ4bGRIUmxjaTF6Y0dGamFXNW5PaTR5TldWdE8yWnBiR3c2ZDJocGRHVjlQQzl6ZEhsc1pUNDhjbVZqZENCM2FXUjBhRDBpTVRBd0pTSWdhR1ZwWjJoMFBTSXhNREFsSWlCbWFXeHNQU0lqTXpBek9EUXhJaTgrUEhSbGVIUWdlRDBpTlRBbElpQjVQU0l5TlNVaUlHTnNZWE56UFNKbElpQmtiMjFwYm1GdWRDMWlZWE5sYkdsdVpUMGliV2xrWkd4bElpQjBaWGgwTFdGdVkyaHZjajBpYldsa1pHeGxJajVmWDE4OEwzUmxlSFErUEhSbGVIUWdlRDBpTlRBbElpQjVQU0kxTUNVaUlHTnNZWE56UFNKbElpQmtiMjFwYm1GdWRDMWlZWE5sYkdsdVpUMGliV2xrWkd4bElpQjBaWGgwTFdGdVkyaHZjajBpYldsa1pHeGxJajVmWDE4OEwzUmxlSFErUEhSbGVIUWdlRDBpTlRBbElpQjVQU0kzTlNVaUlHTnNZWE56UFNKbElpQmtiMjFwYm1GdWRDMWlZWE5sYkdsdVpUMGliV2xrWkd4bElpQjBaWGgwTFdGdVkyaHZjajBpYldsa1pHeGxJajVmWDE4OEwzUmxlSFErUEM5emRtYysifQ=="
+        );
+        assertEq(
+            nft.tokenURI(2),
+            "data:application/json;base64,eyJuYW1lIjoiVFRUIE5GVCIsImRlc2NyaXB0aW9uIjoiVGljIFRhYyBUb2tlbiBORlQiLCJpbWFnZSI6ImRhdGE6aW1hZ2Uvc3ZnK3htbDtiYXNlNjQsUEhOMlp5QjRiV3h1Y3owaWFIUjBjRG92TDNkM2R5NTNNeTV2Y21jdk1qQXdNQzl6ZG1jaUlIQnlaWE5sY25abFFYTndaV04wVW1GMGFXODlJbmhOYVc1WlRXbHVJRzFsWlhRaUlIWnBaWGRDYjNnOUlqQWdNQ0F6TlRBZ016VXdJajQ4YzNSNWJHVStMbVY3Wm05dWRDMW1ZVzFwYkhrNmJXOXViM053WVdObE8yWnZiblF0YzJsNlpUbzBPSEIwTzJ4bGRIUmxjaTF6Y0dGamFXNW5PaTR5TldWdE8yWnBiR3c2ZDJocGRHVjlQQzl6ZEhsc1pUNDhjbVZqZENCM2FXUjBhRDBpTVRBd0pTSWdhR1ZwWjJoMFBTSXhNREFsSWlCbWFXeHNQU0lqTXpBek9EUXhJaTgrUEhSbGVIUWdlRDBpTlRBbElpQjVQU0l5TlNVaUlHTnNZWE56UFNKbElpQmtiMjFwYm1GdWRDMWlZWE5sYkdsdVpUMGliV2xrWkd4bElpQjBaWGgwTFdGdVkyaHZjajBpYldsa1pHeGxJajVmWDE4OEwzUmxlSFErUEhSbGVIUWdlRDBpTlRBbElpQjVQU0kxTUNVaUlHTnNZWE56UFNKbElpQmtiMjFwYm1GdWRDMWlZWE5sYkdsdVpUMGliV2xrWkd4bElpQjBaWGgwTFdGdVkyaHZjajBpYldsa1pHeGxJajVmWDE4OEwzUmxlSFErUEhSbGVIUWdlRDBpTlRBbElpQjVQU0kzTlNVaUlHTnNZWE56UFNKbElpQmtiMjFwYm1GdWRDMWlZWE5sYkdsdVpUMGliV2xrWkd4bElpQjBaWGgwTFdGdVkyaHZjajBpYldsa1pHeGxJajVmWDE4OEwzUmxlSFErUEM5emRtYysifQ=="
+        );
+    }
 }
