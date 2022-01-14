@@ -17,7 +17,7 @@ contract TicTacToken {
     uint256 internal constant EMPTY = 0;
     uint256 internal constant X = 1;
     uint256 internal constant O = 2;
-    uint256 internal constant POINTS_PER_WIN = 300;
+    uint256 internal constant POINTS_PER_WIN = 300 ether;
     uint256 internal nextGameId;
     mapping(address => uint256) internal winCountByAddress;
     mapping(address => uint256) internal pointCountByAddress;

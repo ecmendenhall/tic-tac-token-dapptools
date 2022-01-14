@@ -3,10 +3,13 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 import "./interfaces/ITicTacToken.sol";
 import "../lib/Base64.sol";
 
 contract NFT is ERC721, Ownable {
+    using Strings for uint256;
+
     ITicTacToken public ttt;
     uint256 internal constant EMPTY = 0;
     uint256 internal constant X = 1;
@@ -28,11 +31,10 @@ contract NFT is ERC721, Ownable {
         override
         returns (string memory)
     {
-        uint256 currentGame = ttt.gameIdByTokenId(tokenId);
-        return metadataURI(ttt.board(currentGame));
+        return metadataURI(ttt.gameIdByTokenId(tokenId));
     }
 
-    function metadataJSON(uint256[9] memory board)
+    function metadataJSON(uint256 gameId, uint256[9] memory board)
         public
         view
         returns (string memory)
@@ -40,8 +42,8 @@ contract NFT is ERC721, Ownable {
         return
             string(
                 abi.encodePacked(
-                    '{"name":"',
-                    symbol(),
+                    '{"name":"Game #',
+                    gameId.toString(),
                     '","description":"',
                     name(),
                     '","image":"',
@@ -51,12 +53,12 @@ contract NFT is ERC721, Ownable {
             );
     }
 
-    function metadataURI(uint256[9] memory board)
-        public
-        view
-        returns (string memory)
-    {
-        return _encodeDataURI("application/json", metadataJSON(board));
+    function metadataURI(uint256 gameId) public view returns (string memory) {
+        return
+            _encodeDataURI(
+                "application/json",
+                metadataJSON(gameId, ttt.board(gameId))
+            );
     }
 
     function imageURI(uint256[9] memory board)
