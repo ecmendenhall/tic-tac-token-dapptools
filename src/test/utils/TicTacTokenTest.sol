@@ -2,11 +2,13 @@
 pragma solidity ^0.8.0;
 import "ds-test/test.sol";
 
+import "@openzeppelin/contracts/token/ERC721/utils/ERC721Holder.sol";
 import "../../Token.sol";
+import "../../NFT.sol";
 import "../../TicTacToken.sol";
 import "./Hevm.sol";
 
-contract User {
+contract User is ERC721Holder {
     TicTacToken internal ttt;
 
     function setTTT(address _ticTacToken) public {
@@ -31,6 +33,7 @@ abstract contract TicTacTokenTest is DSTest {
     User internal playerO;
     User internal other;
     TicTacToken internal ttt;
+    NFT internal nft;
     Token internal token;
     User internal admin;
     User internal nonAdmin;

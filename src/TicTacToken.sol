@@ -2,6 +2,7 @@
 pragma solidity ^0.8.0;
 
 import "./interfaces/IToken.sol";
+import "./interfaces/INFT.sol";
 
 contract TicTacToken {
     address public admin;
@@ -31,6 +32,7 @@ contract TicTacToken {
         playerX = _playerX;
         playerO = _playerO;
         token = IToken(_token);
+        nft = INFT(_nft);
     }
 
     modifier onlyAdmin() {

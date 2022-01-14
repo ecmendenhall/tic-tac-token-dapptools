@@ -248,4 +248,33 @@ contract TestTTT is TicTacTokenTest {
         playerO.markSpace(6);
         assertEq(ttt.totalPoints(address(playerO)), 200);
     }
+
+    function test_issues_tokens_to_players_on_new_game() public {
+        assertEq(nft.balanceOf(address(playerX)), 1);
+        assertEq(nft.balanceOf(address(playerO)), 1);
+    }
+
+    function test_issues_unique_tokens_to_players() public {
+        ttt.newGame(address(playerX), address(playerO));
+        ttt.newGame(address(playerX), address(playerO));
+
+        assertEq(nft.ownerOf(1), address(playerX));
+        assertEq(nft.ownerOf(3), address(playerX));
+        assertEq(nft.ownerOf(5), address(playerX));
+        assertEq(nft.ownerOf(2), address(playerO));
+        assertEq(nft.ownerOf(4), address(playerO));
+        assertEq(nft.ownerOf(6), address(playerO));
+    }
+
+    function test_gets_token_id_for_game() public {
+        ttt.newGame(address(playerX), address(playerO));
+        ttt.newGame(address(playerX), address(playerO));
+
+        assertEq(ttt.gameIdByTokenId(1), 1);
+        assertEq(ttt.gameIdByTokenId(2), 1);
+        assertEq(ttt.gameIdByTokenId(3), 2);
+        assertEq(ttt.gameIdByTokenId(4), 2);
+        assertEq(ttt.gameIdByTokenId(5), 3);
+        assertEq(ttt.gameIdByTokenId(6), 3);
+    }
 }
