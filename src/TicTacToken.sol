@@ -19,7 +19,6 @@ contract TicTacToken {
     uint256 internal constant O = 2;
     uint256 internal constant POINTS_PER_WIN = 300;
     uint256 internal nextGameId;
-    address internal owner;
     mapping(address => uint256) internal winCountByAddress;
     mapping(address => uint256) internal pointCountByAddress;
 
