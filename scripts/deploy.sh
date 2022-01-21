@@ -6,8 +6,9 @@ set -eo pipefail
 . $(dirname $0)/common.sh
 
 # Deploy.
-TokenAddr=$(deploy Token)
-log "Token deployed at:" $TokenAddr
+#TokenAddr=$(deploy Token)
+#log "Token deployed at:" $TokenAddr
+TokenAddr="0x61487d9F293eeeD1607c8049243d946Ed61621Fb"
 
 NFTAddr=$(deploy NFT)
 log "NFT deployed at:" $NFTAddr
