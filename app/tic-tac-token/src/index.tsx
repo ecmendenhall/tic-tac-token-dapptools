@@ -3,8 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { Mainnet, DAppProvider, useEtherBalance, useEthers, Config, Rinkeby } from '@usedapp/core'
-
+import { Config, DAppProvider, Rinkeby } from '@usedapp/core'
 
 const config: Config = {
   readOnlyChainId: Rinkeby.chainId,
@@ -16,7 +15,7 @@ const config: Config = {
 ReactDOM.render(
   <React.StrictMode>
     <DAppProvider config={config}>
-      <App />
+    <App />
     </DAppProvider>
   </React.StrictMode>,
   document.getElementById('root')
