@@ -12,9 +12,9 @@ contract TestToken is TokenTest {
         assertEq(token.symbol(), "TTT");
     }
 
-    function test_has_decimals() public {
-        assertEq(token.decimals(), 18);
-    }
+    //function test_has_decimals() public {
+    //    assertEq(token.decimals(), 18);
+    //}
 
     function test_initial_total_supply_is_zero() public {
         assertEq(token.totalSupply(), 0);
