@@ -1,26 +1,24 @@
-import './App.css';
-
-import ConnectWallet from './components/ConnectWallet';
-import NewGame from './components/NewGame';
-import CurrentBlock from './components/CurrentBlock';
-import CurrentTurn from './components/CurrentTurn';
-import Balances from './components/Balances';
-import Board from './components/Board';
-import MarkSpace from './components/MarkSpace';
-
+import NewGame from "./components/NewGame";
+import CurrentTurn from "./components/CurrentTurn";
+import Balances from "./components/Balances";
+import Board from "./components/Board";
+import MarkSpace from "./components/MarkSpace";
+import FullPage from "./layouts/FullPage";
 
 const App = () => {
   return (
-    <div>
-      <ConnectWallet />
-      <NewGame />
+    <FullPage>
+      <div className="flex flex-row justify-around text-lg">
+        <div>
+          <Board />
+          <CurrentTurn />
+          <MarkSpace />
+          <NewGame />
+        </div>
+      </div>
       <Balances />
-      <MarkSpace />
-      <Board />
-      <CurrentTurn />
-      <CurrentBlock />
-    </div>
-  )
-}
+    </FullPage>
+  );
+};
 
 export default App;

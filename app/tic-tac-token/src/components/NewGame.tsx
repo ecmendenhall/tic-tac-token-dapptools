@@ -1,6 +1,7 @@
-import { useNewGame } from "../hooks";
+import { useNewGame } from "../hooks/contracts";
 import { useEthers } from "@usedapp/core";
 import React, { useState } from "react";
+import Button from "./Button";
 
 const NewGame = () => {
   const { account } = useEthers();
@@ -9,18 +10,20 @@ const NewGame = () => {
   const [playerTwoAddress, setPlayerTwoAddress] = useState("");
 
   const onChange = (evt: React.FormEvent<HTMLInputElement>) => {
-      setPlayerTwoAddress(evt.currentTarget.value);
-  }
+    setPlayerTwoAddress(evt.currentTarget.value);
+  };
 
   return (
     <div>
-      <button onClick={() => sendNewGame(account, playerTwoAddress)}>New Game</button>
-      <input type="text" name="playerTwoAddress" onChange={onChange} />
-      {newGameState && <div>
-      <p>New Game State: {newGameState.status}</p>
-      <p>{newGameState.errorMessage}</p>
-      </div>
-      }
+      <input
+        className="p-2 shadow-inner mr-4"
+        type="text"
+        name="playerTwoAddress"
+        onChange={onChange}
+      />
+      <Button onClick={() => sendNewGame(account, playerTwoAddress)}>
+        New Game
+      </Button>
     </div>
   );
 };
