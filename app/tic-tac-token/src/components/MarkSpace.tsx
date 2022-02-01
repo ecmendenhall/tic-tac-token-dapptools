@@ -1,8 +1,8 @@
-import { useMarkSpace, useCurrentTurn } from "../hooks";
+import { useMarkSpace, useCurrentTurn } from "../hooks/contracts";
 import { BigNumber } from "ethers";
 import { parseUnits } from "ethers/lib/utils";
 import React, { useState } from "react";
-import { Marker } from "./Board";
+import Button from "./Button";
 
 const MarkSpace = () => {
   const { state: markSpaceState, send: sendMarkSpace } = useMarkSpace();
@@ -23,12 +23,26 @@ const MarkSpace = () => {
 
   const onChange = (evt: React.FormEvent<HTMLInputElement>) => {
     setIndex(parseUnits(evt.currentTarget.value, "wei"));
-  }
+  };
 
   return (
-    <div>
-      <input type="text" name="index" onChange={onChange} />
-      <button onClick={() => { console.log(gameId); console.log(index); console.log(symbolToNumber(symbol)); sendMarkSpace(gameId, index, symbolToNumber(symbol)) }}>Mark space</button>
+    <div className="mb-4">
+      <input
+        className="p-2 shadow-inner mr-4"
+        type="text"
+        name="index"
+        onChange={onChange}
+      />
+      <Button
+        onClick={() => {
+          console.log(gameId);
+          console.log(index);
+          console.log(symbolToNumber(symbol));
+          sendMarkSpace(gameId, index, symbolToNumber(symbol));
+        }}
+      >
+        Mark space
+      </Button>
     </div>
   );
 };
