@@ -4,12 +4,12 @@ import contracts from "../config/contracts";
 
 const provider = getDefaultProvider();
 
-export function useBoard() {
+export function useBoard(gameId : string | undefined) {
   const [board] = useContractCall({
     abi: contracts.game.abi,
     address: contracts.game.address,
     method: "board",
-    args: [7],
+    args: [gameId],
   }) ?? [[]];
   return board.map((square: BigNumber) => {
     if (square.eq(1)) {
@@ -22,12 +22,12 @@ export function useBoard() {
   });
 }
 
-export function useCurrentTurn() {
+export function useCurrentTurn(gameId : string | undefined) {
   const [turn] = useContractCall({
     abi: contracts.game.abi,
     address: contracts.game.address,
     method: "currentTurn",
-    args: [7],
+    args: [gameId],
   }) ?? [BigNumber.from(0)];
   if (turn.eq(1)) {
     return "X";

@@ -1,7 +1,11 @@
 import { useCurrentTurn } from "../hooks/contracts";
 
-const CurrentTurn = () => {
-  const currentTurn = useCurrentTurn();
+interface Props {
+  gameId: string | undefined;
+}
+
+const CurrentTurn = ({ gameId } : Props) => {
+  const currentTurn = useCurrentTurn(gameId);
 
   return (
     <div className="text-center my-8">

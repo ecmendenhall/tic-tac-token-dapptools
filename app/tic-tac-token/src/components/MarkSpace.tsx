@@ -4,12 +4,15 @@ import { parseUnits } from "ethers/lib/utils";
 import React, { useState } from "react";
 import Button from "./Button";
 
-const MarkSpace = () => {
+interface Props {
+  gameId: string | undefined;
+}
+
+const MarkSpace = ({ gameId } : Props) => {
   const { state: markSpaceState, send: sendMarkSpace } = useMarkSpace();
 
   const [index, setIndex] = useState(BigNumber.from(0));
-  const gameId = BigNumber.from(7);
-  const symbol = useCurrentTurn();
+  const symbol = useCurrentTurn(gameId);
 
   const symbolToNumber = (marker: string) => {
     if (marker === "X") {
