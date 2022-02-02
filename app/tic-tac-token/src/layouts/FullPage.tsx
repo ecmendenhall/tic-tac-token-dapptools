@@ -8,8 +8,8 @@ interface Props {
 const FullPage = ({ children }: Props) => {
   return (
     <div className="p-16 min-h-screen bg-gradient-to-tr from-blue-100 to-purple-100">
-      <div className="mb-8">
-        <h1 className="font-display font-bold text-6xl text-center">
+      <div className="mb-8 text-center">
+        <h1 className="font-display font-bold text-6xl">
           Tic Tac Token
         </h1>
       </div>

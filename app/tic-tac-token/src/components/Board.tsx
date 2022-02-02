@@ -2,8 +2,12 @@ import { useBoard } from "../hooks/contracts";
 
 export type Marker = "X" | "O" | " ";
 
-const Board = () => {
-  const board = useBoard();
+interface Props {
+  gameId: string | undefined;
+}
+
+const Board = ({ gameId } : Props) => {
+  const board = useBoard(gameId);
   return (
     <div className="grid grid-cols-3 w-96 bg-white">
       {board &&
