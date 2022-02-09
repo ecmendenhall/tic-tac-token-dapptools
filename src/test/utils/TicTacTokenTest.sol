@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.0;
-import "ds-test/test.sol";
+import "../../../lib/ds-test/src/test.sol";
 
 import "@openzeppelin/contracts/token/ERC721/utils/ERC721Holder.sol";
 import "../../Token.sol";
