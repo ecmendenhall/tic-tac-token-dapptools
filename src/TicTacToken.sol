@@ -14,6 +14,7 @@ contract TicTacToken {
 
     mapping(uint256 => Game) public games;
     mapping(uint256 => uint256) public gameIdByTokenId;
+    mapping(address => uint256[]) public gamesByAddress;
     IToken public token;
     INFT public nft;
 
@@ -42,7 +43,18 @@ contract TicTacToken {
         nextGameId++;
         games[nextGameId].playerX = _playerX;
         games[nextGameId].playerO = _playerO;
+
+        gamesByAddress[_playerX].push(nextGameId);
+        gamesByAddress[_playerO].push(nextGameId);
         mintGameToken(_playerX, _playerO);
+    }
+
+    function getGamesByAddress(address playerAddress)
+        public
+        view
+        returns (uint256[] memory)
+    {
+        return gamesByAddress[playerAddress];
     }
 
     function mintGameToken(address _playerX, address _playerO) internal {

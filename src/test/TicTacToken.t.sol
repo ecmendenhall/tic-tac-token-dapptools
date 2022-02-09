@@ -13,6 +13,21 @@ contract TestTTT is TicTacTokenTest {
         ttt.newGame(address(playerX), address(playerO));
     }
 
+    function test_adds_game_to_games_by_address() public {
+        ttt.newGame(address(playerX), address(playerO));
+
+        uint256[2] memory expected = [uint256(1), uint256(2)];
+        uint256[] memory playerXGames = ttt.getGamesByAddress(address(playerX));
+        uint256[] memory playerOGames = ttt.getGamesByAddress(address(playerO));
+
+        assertEq(playerXGames.length, 2);
+        assertEq(playerOGames.length, 2);
+        for (uint256 i = 0; i < 2; i++) {
+            assertEq(playerXGames[i], expected[i]);
+            assertEq(playerOGames[i], expected[i]);
+        }
+    }
+
     function test_get_board() public {
         uint256[9] memory expected = [
             EMPTY,

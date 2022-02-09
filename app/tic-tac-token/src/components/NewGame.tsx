@@ -15,12 +15,15 @@ const NewGame = () => {
 
   return (
     <div>
-      <input
-        className="p-2 shadow-inner mr-4"
-        type="text"
-        name="playerTwoAddress"
-        onChange={onChange}
-      />
+      <label>
+        <input
+          className="p-2 shadow-inner mr-4"
+          type="text"
+          name="playerTwoAddress"
+          placeholder="Opponent address"
+          onChange={onChange}
+        />
+      </label>
       <Button onClick={() => sendNewGame(account, playerTwoAddress)}>
         New Game
       </Button>

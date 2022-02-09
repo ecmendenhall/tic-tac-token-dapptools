@@ -8,6 +8,8 @@ const contracts = {
       "function currentTurn(uint256 gameId) returns (uint256)",
       "function newGame(address _playerX, address _playerO) external",
       "function markSpace(uint256 gameId, uint256 i, uint256 symbol) external",
+      "function games(uint256 gameId) external returns (tuple(address, address, uint256))",
+      "function winner(uint256 gameId) view returns (uint256)",
     ]),
   },
   token: {
