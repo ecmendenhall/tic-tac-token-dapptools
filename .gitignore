@@ -4,3 +4,8 @@ node_modules
 # Dapptools
 out/
 .env
+
+# Hardhat
+artifacts/
+cache/
+typechain/
