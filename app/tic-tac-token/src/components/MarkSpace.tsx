@@ -3,15 +3,30 @@ import { BigNumber } from "ethers";
 import { parseUnits } from "ethers/lib/utils";
 import React, { useState } from "react";
 import Button from "./Button";
+import {
+  getExplorerAddressLink,
+  shortenIfAddress,
+  useEthers,
+} from "@usedapp/core";
 
 interface Props {
   gameId: string | undefined;
+  selectedSpace?: number;
+  playerX: string;
+  playerO: string;
+  turns: number;
 }
 
-const MarkSpace = ({ gameId } : Props) => {
+const MarkSpace = ({
+  gameId,
+  selectedSpace,
+  playerX,
+  playerO,
+  turns,
+}: Props) => {
   const { state: markSpaceState, send: sendMarkSpace } = useMarkSpace();
+  const { account } = useEthers();
 
-  const [index, setIndex] = useState(BigNumber.from(0));
   const symbol = useCurrentTurn(gameId);
 
   const symbolToNumber = (marker: string) => {
@@ -24,30 +39,30 @@ const MarkSpace = ({ gameId } : Props) => {
     }
   };
 
-  const onChange = (evt: React.FormEvent<HTMLInputElement>) => {
-    setIndex(parseUnits(evt.currentTarget.value, "wei"));
+  const validPlayer = () => {
+    return account === playerX || account === playerO;
   };
 
-  return (
-    <div className="mb-4">
-      <input
-        className="p-2 shadow-inner mr-4"
-        type="text"
-        name="index"
-        onChange={onChange}
-      />
-      <Button
-        onClick={() => {
-          console.log(gameId);
-          console.log(index);
-          console.log(symbolToNumber(symbol));
-          sendMarkSpace(gameId, index, symbolToNumber(symbol));
-        }}
-      >
-        Mark space
-      </Button>
-    </div>
-  );
+  const currentTurn = () => {
+    const currentPlayerAddress = symbol === "X" ? playerX : playerO;
+    return account === currentPlayerAddress;
+  };
+
+  if (validPlayer() && currentTurn()) {
+    return (
+      <div className="mb-4">
+        <Button
+          onClick={() => {
+            sendMarkSpace(gameId, selectedSpace, symbolToNumber(symbol));
+          }}
+        >
+          Mark space
+        </Button>
+      </div>
+    );
+  } else {
+    return <div></div>;
+  }
 };
 
 export default MarkSpace;
