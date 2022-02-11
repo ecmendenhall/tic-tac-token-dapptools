@@ -16,20 +16,19 @@ const GameInfo = ({ playerX, playerO, turns }: Props) => {
   const { chainId } = useEthers();
 
   return (
-    <div>
-      <p>
-        PlayerX:{" "}
+    <div className="my-4">
+      <p className="mb-1">
+        Player X:{" "}
         <a href={getExplorerAddressLink(playerX, chainId || 1)}>
-          {shortenIfAddress(playerX)}
+          <pre className="inline bg-blue-50 p-0.5">{shortenIfAddress(playerX)}</pre>
         </a>
       </p>
       <p>
-        PlayerO:{" "}
+        Player O:{" "}
         <a href={getExplorerAddressLink(playerO, chainId || 1)}>
-          {shortenIfAddress(playerO)}
+          <pre className="inline bg-blue-50 p-0.5">{shortenIfAddress(playerO)}</pre>
         </a>
       </p>
-      <p>Turns: {turns && formatUnits(turns, "wei")}</p>
     </div>
   );
 };
