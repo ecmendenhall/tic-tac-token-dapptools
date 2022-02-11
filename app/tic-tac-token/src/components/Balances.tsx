@@ -9,10 +9,10 @@ const Balances = () => {
   const nftBalance = useTokenBalance(contracts.nft.address, account);
 
   return (
-    <div className="fixed top-12 left-12">
-      {etherBalance && <p>ETH: {formatEther(etherBalance).slice(0, 6)}</p>}
-      {tttBalance && <p>TTT: {formatEther(tttBalance)}</p>}
-      {nftBalance && <p>Games: {formatUnits(nftBalance, "wei")}</p>}
+    <div className="fixed top-12 left-12 bg-blue-50 rounded-md shadow p-2">
+      {etherBalance && <p><strong>ETH:</strong> {formatEther(etherBalance).slice(0, 6)}</p>}
+      {tttBalance && <p><strong>TTT:</strong> {formatEther(tttBalance)}</p>}
+      {nftBalance && <p><strong>Games:</strong> {formatUnits(nftBalance, "wei")}</p>}
     </div>
   );
 };

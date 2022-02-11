@@ -23,7 +23,7 @@ const Game = () => {
     <FullPage>
       <div className="flex flex-row justify-around text-lg">
         <div>
-          <h2 className="text-center">Game #{gameId}</h2>
+          <h2 className="text-center text-2xl">Game #{gameId}</h2>
           <Board
             gameId={gameId}
             onSelectedSpace={onSelectedSpace}
@@ -31,12 +31,12 @@ const Game = () => {
             currentTurn={currentTurn}
             winner={winner}
           />
+          <GameInfo {...gameState} />
           <CurrentTurn
             gameId={gameId}
             currentTurn={currentTurn}
             winner={winner}
           />
-          <GameInfo {...gameState} />
           {!winner && (
             <MarkSpace
               gameId={gameId}

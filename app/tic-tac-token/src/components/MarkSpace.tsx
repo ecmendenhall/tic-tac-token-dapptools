@@ -50,7 +50,7 @@ const MarkSpace = ({
 
   if (validPlayer() && currentTurn()) {
     return (
-      <div className="mb-4">
+      <div className="mb-4 text-center">
         <Button
           onClick={() => {
             sendMarkSpace(gameId, selectedSpace, symbolToNumber(symbol));
