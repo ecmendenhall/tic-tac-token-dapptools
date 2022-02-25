@@ -1,9 +1,10 @@
 import { formatEther, formatUnits } from "ethers/lib/utils";
 import { useEthers, useEtherBalance, useTokenBalance } from "@usedapp/core";
-import contracts from "../config/contracts";
+import contracts, { getContracts } from "../config/contracts";
 
 const Balances = () => {
-  const { account } = useEthers();
+  const { chainId, account } = useEthers();
+  const contracts = getContracts(chainId);
   const etherBalance = useEtherBalance(account);
   const tttBalance = useTokenBalance(contracts.token.address, account);
   const nftBalance = useTokenBalance(contracts.nft.address, account);

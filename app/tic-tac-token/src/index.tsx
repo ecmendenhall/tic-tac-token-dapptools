@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { Config, DAppProvider, Rinkeby } from "@usedapp/core";
+import { Config, DAppProvider, Rinkeby, Hardhat } from "@usedapp/core";
 
 import "./index.css";
 
@@ -12,6 +12,9 @@ const config: Config = {
     [Rinkeby.chainId]:
       "https://eth-rinkeby.alchemyapi.io/v2/binQCNYdryAKxeIakeJLx1YXSLQK-9cE",
   },
+  multicallAddresses: {
+    [Hardhat.chainId]: "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+  }
 };
 
 ReactDOM.render(
