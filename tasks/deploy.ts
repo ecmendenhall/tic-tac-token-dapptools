@@ -1,7 +1,7 @@
 import { HardhatUserConfig, task } from "hardhat/config";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import "@nomiclabs/hardhat-ethers";
-import { NFT, TicTacToken, Token } from "../typechain";
+import { NFT, TicTacToken, Token, Multicall } from "../typechain";
 
 interface Args {}
 
@@ -9,10 +9,16 @@ interface Contracts {
     token: Token;
     nft: NFT;
     ticTacToken: TicTacToken;
+    multicall: Multicall;
 }
 
 export async function deploy(args: Args, hre: HardhatRuntimeEnvironment) : Promise<Contracts> {
   const { ethers } = hre;
+  
+  const Multicall = await ethers.getContractFactory("Multicall");
+  const multicall = await Multicall.deploy();
+  await multicall.deployed();
+  console.log("Multicall deployed to: ", multicall.address);
 
   const Token = await ethers.getContractFactory("Token");
   const token = await Token.deploy();
@@ -39,7 +45,7 @@ export async function deploy(args: Args, hre: HardhatRuntimeEnvironment) : Promi
     value: ethers.utils.parseEther("1000"),
   });
 
-  return { token, nft, ticTacToken }
+  return { multicall, token, nft, ticTacToken }
 }
 
 export default task("deploy", "Deploys Tic Tac Token contracts").setAction(deploy);

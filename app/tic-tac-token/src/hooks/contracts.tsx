@@ -1,7 +1,7 @@
-import { useContractCall, useContractFunction } from "@usedapp/core";
+import { useContractCall, useContractFunction, useEthers } from "@usedapp/core";
 import { getDefaultProvider, BigNumber, Contract } from "ethers";
 import { Marker } from "../components/Board";
-import contracts from "../config/contracts";
+import contracts, { getContracts } from "../config/contracts";
 
 const provider = getDefaultProvider();
 
@@ -16,6 +16,8 @@ const numberToMarker = (number: BigNumber): Marker => {
 };
 
 export function useBoard(gameId: string | undefined) {
+  const { chainId } = useEthers();
+  const contracts = getContracts(chainId);
   const [board] = useContractCall({
     abi: contracts.game.abi,
     address: contracts.game.address,
@@ -26,6 +28,8 @@ export function useBoard(gameId: string | undefined) {
 }
 
 export function useCurrentTurn(gameId: string | undefined) {
+  const { chainId } = useEthers();
+  const contracts = getContracts(chainId);
   const [turn] = useContractCall({
     abi: contracts.game.abi,
     address: contracts.game.address,
@@ -36,6 +40,8 @@ export function useCurrentTurn(gameId: string | undefined) {
 }
 
 export function useWinner(gameId: string | undefined) {
+  const { chainId } = useEthers();
+  const contracts = getContracts(chainId);
   const [winner] = useContractCall({
     abi: contracts.game.abi,
     address: contracts.game.address,
@@ -46,6 +52,8 @@ export function useWinner(gameId: string | undefined) {
 }
 
 export function useGame(gameId: string | undefined) {
+  const { chainId } = useEthers();
+  const contracts = getContracts(chainId);
   const [game] = useContractCall({
     abi: contracts.game.abi,
     address: contracts.game.address,
@@ -56,7 +64,21 @@ export function useGame(gameId: string | undefined) {
   return { playerX, playerO, turns };
 }
 
+export function useGamesByAddress(address: string | null | undefined) {
+  const { chainId } = useEthers();
+  const contracts = getContracts(chainId);
+  const [games] = useContractCall({
+    abi: contracts.game.abi,
+    address: contracts.game.address,
+    method: "getGamesByAddress",
+    args: [address],
+  }) ?? [[]];
+  return games;
+}
+
 export function useNewGame() {
+  const { chainId } = useEthers();
+  const contracts = getContracts(chainId);
   const contract = new Contract(
     contracts.game.address,
     contracts.game.abi,
@@ -68,6 +90,8 @@ export function useNewGame() {
 }
 
 export function useMarkSpace() {
+  const { chainId } = useEthers();
+  const contracts = getContracts(chainId);
   const contract = new Contract(
     contracts.game.address,
     contracts.game.abi,
