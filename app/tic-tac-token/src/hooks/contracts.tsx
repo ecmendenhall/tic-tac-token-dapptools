@@ -1,5 +1,8 @@
+import { EtherscanProvider } from "@ethersproject/providers";
 import { useContractCall, useContractFunction, useEthers } from "@usedapp/core";
-import { getDefaultProvider, BigNumber, Contract } from "ethers";
+import { getDefaultProvider, BigNumber, Contract, ethers } from "ethers";
+import { parseUnits } from "ethers/lib/utils";
+import { useEffect, useState } from "react";
 import { Marker } from "../components/Board";
 import contracts, { getContracts } from "../config/contracts";
 
@@ -74,6 +77,32 @@ export function useGamesByAddress(address: string | null | undefined) {
     args: [address],
   }) ?? [[]];
   return games;
+}
+
+export function useGameHistory(gameId: string | undefined) {
+  const { library, chainId } = useEthers();
+  const contracts = getContracts(chainId);
+  const [gameEvents, setGameEvents] = useState<ethers.Event[]>([]);
+
+  useEffect(() => {
+    const loadGameEvents = async () => {
+      if (gameId && library) {
+        const game = new ethers.Contract(
+          contracts.game.address,
+          contracts.game.abi,
+          library
+        );
+        const events = await game.queryFilter(
+          game.filters.MarkSpace(null, parseUnits(gameId, "wei"))
+        );
+        console.log("Events: ", events);
+        setGameEvents(events);
+      }
+    }
+    loadGameEvents();
+  }, [gameId, chainId]);
+
+  return gameEvents;
 }
 
 export function useNewGame() {

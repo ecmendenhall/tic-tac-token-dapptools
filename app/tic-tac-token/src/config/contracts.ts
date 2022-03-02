@@ -12,7 +12,10 @@ const contracts = {
         "function markSpace(uint256 gameId, uint256 i, uint256 symbol) external",
         "function games(uint256 gameId) external returns (tuple(address, address, uint256))",
         "function winner(uint256 gameId) view returns (uint256)",
-        "function getGamesByAddress(address player) view returns (uint256[])"
+        "function getGamesByAddress(address player) view returns (uint256[])",
+        "event NewGame(address indexed playerX, address indexed playerO, uint256 gameId)",
+        "event MarkSpace(address indexed player, uint256 indexed gameId, uint256 position, uint256 symbol, uint256[9] board)",
+        "event Win(address indexed winner, uint256 gameId)",
       ]),
     },
     token: {

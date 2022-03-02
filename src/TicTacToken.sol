@@ -5,6 +5,11 @@ import "./interfaces/IToken.sol";
 import "./interfaces/INFT.sol";
 
 contract TicTacToken {
+
+    event NewGame(address indexed playerX, address indexed playerO, uint256 gameId);
+    event MarkSpace(address indexed player, uint256 indexed gameId, uint256 position, uint256 symbol, uint256[9] board);
+    event Win(address indexed winner, uint256 gameId);
+
     struct Game {
         address playerX;
         address playerO;
@@ -47,6 +52,7 @@ contract TicTacToken {
         gamesByAddress[_playerX].push(nextGameId);
         gamesByAddress[_playerO].push(nextGameId);
         mintGameToken(_playerX, _playerO);
+        emit NewGame(_playerX, _playerO, nextGameId);
     }
 
     function getGamesByAddress(address playerAddress)
@@ -84,7 +90,10 @@ contract TicTacToken {
             _incrementWinCount(winnerAddress);
             _incrementPointCount(winnerAddress);
             token.mintTTT(winnerAddress, POINTS_PER_WIN);
+            emit Win(winnerAddress, gameId);
         }
+
+        emit MarkSpace(msg.sender, gameId, i, symbol, _game(gameId).board);
     }
 
     function board(uint256 gameId) public view returns (uint256[9] memory) {
