@@ -56,6 +56,8 @@ contract TicTacToken {
             totalWins[winnerAddress] += 1;
             totalPoints[winnerAddress] += _pointsEarned();
         }
+
+        emit MarkSpace(msg.sender, gameId, i, symbol, _game(gameId).board);
     }
 
     function board(uint256 gameId) public view returns (uint256[9] memory) {
