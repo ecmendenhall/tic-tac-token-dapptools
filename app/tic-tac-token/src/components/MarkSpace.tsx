@@ -4,7 +4,6 @@ import { parseUnits } from "ethers/lib/utils";
 import React, { useState } from "react";
 import Button from "./Button";
 import {
-  getExplorerAddressLink,
   shortenIfAddress,
   useEthers,
 } from "@usedapp/core";

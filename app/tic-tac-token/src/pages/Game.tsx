@@ -7,7 +7,8 @@ import { useParams } from "react-router-dom";
 import GameInfo from "../components/GameInfo";
 import { useState } from "react";
 import { useCurrentTurn, useGame, useGameHistory, useWinner } from "../hooks/contracts";
-import { formatUnits } from "ethers/lib/utils";
+import { formatUnits } from 'ethers/lib/utils';
+import GameEventLog from "../components/GameEventLog";
 
 const Game = () => {
   const { id: gameId } = useParams();
@@ -15,8 +16,6 @@ const Game = () => {
   const gameState = useGame(gameId);
   const [selectedSpace, setSelectedSpace] = useState<number>();
   const winner = useWinner(gameId);
-
-  const gameEvents = useGameHistory(gameId);
 
   const onSelectedSpace = (index: number) => {
     setSelectedSpace(index);
@@ -47,7 +46,7 @@ const Game = () => {
               {...gameState}
             />
           )}
-          <div>Events: <ul>{gameEvents.map(e => <li>{e.args?.player} marked space {formatUnits(e.args?.position, "wei")} with an {formatUnits(e.args?.symbol, "wei")} </li>)}</ul></div>
+          <GameEventLog gameId={gameId} />
         </div>
       </div>
       <Balances />
