@@ -4,9 +4,9 @@ pragma solidity ^0.8.0;
 import "./utils/TicTacTokenTest.sol";
 
 contract TestTTT is TicTacTokenTest {
-    uint256 internal constant EMPTY = 0;
-    uint256 internal constant X = 1;
-    uint256 internal constant O = 2;
+    uint8 internal constant EMPTY = 0;
+    uint8 internal constant X = 1;
+    uint8 internal constant O = 2;
 
     function setUp() public override {
         super.setUp();
@@ -29,7 +29,7 @@ contract TestTTT is TicTacTokenTest {
     }
 
     function test_get_board() public {
-        uint256[9] memory expected = [
+        uint8[9] memory expected = [
             EMPTY,
             EMPTY,
             EMPTY,
@@ -40,7 +40,7 @@ contract TestTTT is TicTacTokenTest {
             EMPTY,
             EMPTY
         ];
-        uint256[9] memory actual = ttt.board(1);
+        uint8[9] memory actual = ttt.board(1);
         for (uint256 i = 0; i < 9; i++) {
             assertEq(actual[i], expected[i]);
         }

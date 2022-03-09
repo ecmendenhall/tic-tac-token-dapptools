@@ -60,7 +60,7 @@ contract TicTacToken {
         emit MarkSpace(msg.sender, gameId, i, symbol, _game(gameId).board);
     }
 
-    function board(uint256 gameId) public view returns (uint256[9] memory) {
+    function board(uint256 gameId) external view returns (uint8[9] memory) {
         return games[gameId].board;
     }
 
@@ -134,12 +134,13 @@ contract TicTacToken {
             _diag(gameId),
             _antiDiag(gameId)
         ];
-        for (uint256 i = 0; i < wins.length; i++) {
+        for (uint256 i; i < wins.length;) {
             if (wins[i] == 1) {
                 return X;
             } else if (wins[i] == 8) {
                 return O;
             }
+            unchecked { ++i; }
         }
         return 0;
     }
@@ -175,20 +176,20 @@ contract TicTacToken {
             _game(gameId).board[6];
     }
 
-    function winCount(address playerAddress) public view returns (uint256) {
+    function winCount(address playerAddress) external view returns (uint256) {
         return winCountByAddress[playerAddress];
     }
 
-    function pointCount(address playerAddress) public view returns (uint256) {
+    function pointCount(address playerAddress) external view returns (uint256) {
         return pointCountByAddress[playerAddress];
     }
 
     function _incrementWinCount(address playerAddress) private {
-        winCountByAddress[playerAddress]++;
+        unchecked { winCountByAddress[playerAddress]++; }
     }
 
     function _incrementPointCount(address playerAddress) private {
-        pointCountByAddress[playerAddress] += POINTS_PER_WIN;
+        unchecked { pointCountByAddress[playerAddress] += POINTS_PER_WIN; }
     }
 
     function _getPlayerAddress(uint256 gameId, uint256 playerSymbol)
