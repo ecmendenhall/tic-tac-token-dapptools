@@ -7,21 +7,21 @@ import "./interfaces/INFT.sol";
 contract TicTacToken {
 
     event NewGame(address indexed playerX, address indexed playerO, uint256 gameId);
-    event MarkSpace(address indexed player, uint256 indexed gameId, uint256 position, uint256 symbol, uint256[9] board);
+    event MarkSpace(address indexed player, uint256 indexed gameId, uint256 position, uint256 symbol, uint8[9] board);
     event Win(address indexed winner, uint256 gameId);
 
     struct Game {
         address playerX;
         address playerO;
-        uint256 turns;
-        uint256[9] board;
+        uint8 turns;
+        uint8[9] board;
     }
 
     mapping(uint256 => Game) public games;
     mapping(uint256 => uint256) public gameIdByTokenId;
     mapping(address => uint256[]) public gamesByAddress;
-    IToken public token;
-    INFT public nft;
+    IToken public immutable token;
+    INFT public immutable nft;
 
     uint256 internal constant X = 1;
     uint256 internal constant O = 2;
@@ -44,19 +44,20 @@ contract TicTacToken {
         _;
     }
 
-    function newGame(address _playerX, address _playerO) public {
-        nextGameId++;
-        games[nextGameId].playerX = _playerX;
-        games[nextGameId].playerO = _playerO;
+    function newGame(address _playerX, address _playerO) external {
+        unchecked { nextGameId++; }
+        uint256 id = nextGameId;
+        games[id].playerX = _playerX;
+        games[id].playerO = _playerO;
 
-        gamesByAddress[_playerX].push(nextGameId);
-        gamesByAddress[_playerO].push(nextGameId);
+        gamesByAddress[_playerX].push(id);
+        gamesByAddress[_playerO].push(id);
         mintGameToken(_playerX, _playerO);
-        emit NewGame(_playerX, _playerO, nextGameId);
+        emit NewGame(_playerX, _playerO, id);
     }
 
     function getGamesByAddress(address playerAddress)
-        public
+        external
         view
         returns (uint256[] memory)
     {
@@ -68,20 +69,19 @@ contract TicTacToken {
         uint256 playerXToken = playerOToken - 1;
         nft.mint(_playerO, playerOToken);
         nft.mint(_playerX, playerXToken);
-        gameIdByTokenId[playerOToken] = nextGameId;
-        gameIdByTokenId[playerXToken] = nextGameId;
+        gameIdByTokenId[playerOToken] = gameIdByTokenId[playerXToken] = nextGameId;
     }
 
     function markSpace(
         uint256 gameId,
         uint256 i,
-        uint256 symbol
-    ) public requirePlayers(gameId) {
+        uint8 symbol
+    ) external requirePlayers(gameId) {
         require(_validSpace(i), "Invalid space");
         require(_validSymbol(symbol), "Invalid symbol");
         require(_validTurn(gameId, symbol), "Not your turn");
         require(_emptySpace(gameId, i), "Already marked");
-        _game(gameId).turns++;
+        unchecked { _game(gameId).turns++; }
         _game(gameId).board[i] = symbol;
 
         uint256 winningSymbol = winner(gameId);
@@ -96,7 +96,7 @@ contract TicTacToken {
         emit MarkSpace(msg.sender, gameId, i, symbol, _game(gameId).board);
     }
 
-    function board(uint256 gameId) public view returns (uint256[9] memory) {
+    function board(uint256 gameId) external view returns (uint8[9] memory) {
         return games[gameId].board;
     }
 
@@ -143,12 +143,13 @@ contract TicTacToken {
             _diag(gameId),
             _antiDiag(gameId)
         ];
-        for (uint256 i = 0; i < wins.length; i++) {
+        for (uint256 i; i < wins.length;) {
             if (wins[i] == 1) {
                 return X;
             } else if (wins[i] == 8) {
                 return O;
             }
+            unchecked { ++i; }
         }
         return 0;
     }
@@ -184,20 +185,20 @@ contract TicTacToken {
             _game(gameId).board[6];
     }
 
-    function winCount(address playerAddress) public view returns (uint256) {
+    function winCount(address playerAddress) external view returns (uint256) {
         return winCountByAddress[playerAddress];
     }
 
-    function pointCount(address playerAddress) public view returns (uint256) {
+    function pointCount(address playerAddress) external view returns (uint256) {
         return pointCountByAddress[playerAddress];
     }
 
     function _incrementWinCount(address playerAddress) private {
-        winCountByAddress[playerAddress]++;
+        unchecked { winCountByAddress[playerAddress]++; }
     }
 
     function _incrementPointCount(address playerAddress) private {
-        pointCountByAddress[playerAddress] += POINTS_PER_WIN;
+        unchecked { pointCountByAddress[playerAddress] += POINTS_PER_WIN; }
     }
 
     function _getPlayerAddress(uint256 gameId, uint256 playerSymbol)
