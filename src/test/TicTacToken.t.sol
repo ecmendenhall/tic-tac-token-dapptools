@@ -45,16 +45,28 @@ contract TestTTT is TicTacTokenTest {
             assertEq(actual[i], expected[i]);
         }
     }
+    
+    function test_board_bitmaps_start_empty() public {
+        (,,, uint16 playerXBitmap, uint16 playerOBitmap) = ttt.games(1);
+        assertEq(playerXBitmap, 0);
+        assertEq(playerOBitmap, 0);
+    }
 
     function test_can_mark_space_with_X() public {
         playerX.markSpace(1, 0, X);
         assertEq(ttt.board(1)[0], X);
+
+        (,,, uint16 playerXBitmap,) = ttt.games(1);
+        assertEq(playerXBitmap, 1);
     }
 
     function test_can_mark_space_with_O() public {
         playerX.markSpace(1, 1, X);
         playerO.markSpace(1, 0, O);
         assertEq(ttt.board(1)[0], O);
+        
+        (,,,, uint16 playerOBitmap) = ttt.games(1);
+        assertEq(playerOBitmap, 1);
     }
 
     function testFail_cannot_mark_space_with_other_symbol() public {
@@ -241,21 +253,21 @@ contract TestTTT is TicTacTokenTest {
 
     function test_new_game_has_players() public {
         ttt.newGame(address(playerX), address(playerO));
-        (address storedX, address storedO, ) = ttt.games(1);
+        (address storedX, address storedO,,, ) = ttt.games(1);
         assertEq(address(playerX), storedX);
         assertEq(address(playerO), storedO);
     }
 
     function test_new_game_has_turns() public {
         ttt.newGame(address(playerX), address(playerO));
-        (, , uint256 turns) = ttt.games(1);
+        (, , uint256 turns,,) = ttt.games(1);
         assertEq(turns, 0);
     }
 
     function test_new_game_increments_id() public {
         ttt.newGame(address(playerX), address(playerO));
         ttt.newGame(address(playerX), address(playerO));
-        (address storedX, address storedO, uint256 turns) = ttt.games(2);
+        (address storedX, address storedO, uint256 turns,,) = ttt.games(2);
         assertEq(address(playerX), storedX);
         assertEq(address(playerO), storedO);
         assertEq(turns, 0);
