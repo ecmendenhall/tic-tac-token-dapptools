@@ -45,6 +45,12 @@ contract TestTTT is TicTacTokenTest {
             assertEq(actual[i], expected[i]);
         }
     }
+    
+    function test_board_bitmaps_start_empty() public {
+        (,,, uint16 playerXBitmap, uint16 playerOBitmap) = ttt.games(1);
+        assertEq(playerXBitmap, 0);
+        assertEq(playerOBitmap, 0);
+    }
 
     function test_can_mark_space_with_X() public {
         playerX.markSpace(0);

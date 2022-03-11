@@ -57,11 +57,41 @@ contract TicTacToken {
             totalPoints[winnerAddress] += _pointsEarned();
         }
 
-        emit MarkSpace(msg.sender, gameId, i, symbol, _game(gameId).board);
+        emit MarkSpace(msg.sender, gameId, i, symbol);
+    }
+
+    function _setSymbol(uint256 gameId, uint256 i, uint8 symbol) internal {
+        Game storage game = _game(gameId);
+        if (symbol == X) {
+            game.playerXBitmap = _setBit(game.playerXBitmap, i);
+        } 
+        if (symbol == O) {
+            game.playerOBitmap = _setBit(game.playerOBitmap, i);
+        }
+    }
+
+    function _setBit(uint16 bitMap, uint256 i) internal pure returns (uint16) {
+        return bitMap | (uint16(1) << uint16(i));
     }
 
     function board(uint256 gameId) external view returns (uint8[9] memory) {
-        return games[gameId].board;
+        Game memory game = _game(gameId);
+        uint16 playerXBitmap = game.playerXBitmap;
+        uint16 playerOBitmap = game.playerOBitmap;
+        uint16 nonEmptySpaces = playerXBitmap | playerOBitmap;
+        uint8[9] memory boardArray;
+        for (uint256 i; i < 9;) {
+            if (_readBit(nonEmptySpaces, i) != 0) {
+                if (_readBit(playerXBitmap, i) == 1) {
+                    boardArray[i] = uint8(X);
+                }
+                if (_readBit(playerOBitmap, i) == 1) {
+                    boardArray[i] = uint8(O);
+                }
+            }
+            unchecked { ++i; }
+        }
+        return boardArray;
     }
 
     function currentTurn(uint256 gameID) public view returns (uint256) {
@@ -111,12 +141,17 @@ contract TicTacToken {
         return currentTurn() == _getSymbol(player);
     }
 
+    function _readBit(uint16 bitMap, uint256 i) internal pure returns (uint16) {
+        return bitMap & (uint16(1) << uint16(i));
+    }
+
     function _emptySpace(uint256 gameId, uint256 i)
         internal
         view
         returns (bool)
     {
-        return _game(gameId).board[i] == 0;
+        Game memory game = _game(gameId);
+        return _readBit(game.playerXBitmap | game.playerOBitmap, i) == 0;
     }
 
     function _validSymbol(uint256 symbol) internal pure returns (bool) {
@@ -124,56 +159,28 @@ contract TicTacToken {
     }
 
     function _checkWins(uint256 gameId) internal view returns (uint256) {
-        uint256[8] memory wins = [
-            _row(gameId, 0),
-            _row(gameId, 1),
-            _row(gameId, 2),
-            _col(gameId, 0),
-            _col(gameId, 1),
-            _col(gameId, 2),
-            _diag(gameId),
-            _antiDiag(gameId)
+        uint16[8] memory wins = [
+            7,
+            56,
+            448,
+            292,
+            146,
+            73,
+            273,
+            84
         ];
+        Game memory game = _game(gameId);
+        uint16 playerXBitmap = game.playerXBitmap;
+        uint16 playerOBitmap = game.playerOBitmap;
         for (uint256 i; i < wins.length;) {
-            if (wins[i] == 1) {
+            if (wins[i] == playerXBitmap) {
                 return X;
-            } else if (wins[i] == 8) {
+            } else if (wins[i] == playerOBitmap) {
                 return O;
             }
             unchecked { ++i; }
         }
         return 0;
-    }
-
-    function _row(uint256 gameId, uint256 row) internal view returns (uint256) {
-        require(row <= 2, "Invalid row");
-        uint256 pos = row * 3;
-        return
-            _game(gameId).board[pos] *
-            _game(gameId).board[pos + 1] *
-            _game(gameId).board[pos + 2];
-    }
-
-    function _col(uint256 gameId, uint256 col) internal view returns (uint256) {
-        require(col <= 2, "Invalid col");
-        return
-            _game(gameId).board[col] *
-            _game(gameId).board[col + 3] *
-            _game(gameId).board[col + 6];
-    }
-
-    function _diag(uint256 gameId) internal view returns (uint256) {
-        return
-            _game(gameId).board[0] *
-            _game(gameId).board[4] *
-            _game(gameId).board[8];
-    }
-
-    function _antiDiag(uint256 gameId) internal view returns (uint256) {
-        return
-            _game(gameId).board[2] *
-            _game(gameId).board[4] *
-            _game(gameId).board[6];
     }
 
     function winCount(address playerAddress) external view returns (uint256) {
