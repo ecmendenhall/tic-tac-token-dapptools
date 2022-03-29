@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract Token is ERC20, Ownable {
     constructor() ERC20("Tic Tac Token", "TTT") {}
 
-    function mintTTT(address to, uint256 amount) public onlyOwner {
+    function mintTTT(address to, uint256 amount) external onlyOwner {
         _mint(to, amount);
     }
 }

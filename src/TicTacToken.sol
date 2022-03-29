@@ -56,15 +56,17 @@ contract TicTacToken {
             totalWins[winnerAddress] += 1;
             totalPoints[winnerAddress] += _pointsEarned();
         }
-
-        emit MarkSpace(msg.sender, gameId, i, symbol);
     }
 
-    function _setSymbol(uint256 gameId, uint256 i, uint8 symbol) internal {
+    function _setSymbol(
+        uint256 gameId,
+        uint256 i,
+        uint8 symbol
+    ) internal {
         Game storage game = _game(gameId);
         if (symbol == X) {
             game.playerXBitmap = _setBit(game.playerXBitmap, i);
-        } 
+        }
         if (symbol == O) {
             game.playerOBitmap = _setBit(game.playerOBitmap, i);
         }
@@ -80,7 +82,7 @@ contract TicTacToken {
         uint16 playerOBitmap = game.playerOBitmap;
         uint16 nonEmptySpaces = playerXBitmap | playerOBitmap;
         uint8[9] memory boardArray;
-        for (uint256 i; i < 9;) {
+        for (uint256 i = 0; i < 9; ) {
             if (_readBit(nonEmptySpaces, i) != 0) {
                 if (_readBit(playerXBitmap, i) == 1) {
                     boardArray[i] = uint8(X);
@@ -89,7 +91,9 @@ contract TicTacToken {
                     boardArray[i] = uint8(O);
                 }
             }
-            unchecked { ++i; }
+            unchecked {
+                ++i;
+            }
         }
         return boardArray;
     }
@@ -159,26 +163,19 @@ contract TicTacToken {
     }
 
     function _checkWins(uint256 gameId) internal view returns (uint256) {
-        uint16[8] memory wins = [
-            7,
-            56,
-            448,
-            292,
-            146,
-            73,
-            273,
-            84
-        ];
+        uint16[8] memory wins = [7, 56, 448, 292, 146, 73, 273, 84];
         Game memory game = _game(gameId);
         uint16 playerXBitmap = game.playerXBitmap;
         uint16 playerOBitmap = game.playerOBitmap;
-        for (uint256 i; i < wins.length;) {
+        for (uint256 i = 0; i < wins.length; ) {
             if (wins[i] == playerXBitmap) {
                 return X;
             } else if (wins[i] == playerOBitmap) {
                 return O;
             }
-            unchecked { ++i; }
+            unchecked {
+                ++i;
+            }
         }
         return 0;
     }
@@ -192,11 +189,15 @@ contract TicTacToken {
     }
 
     function _incrementWinCount(address playerAddress) private {
-        unchecked { winCountByAddress[playerAddress]++; }
+        unchecked {
+            winCountByAddress[playerAddress]++;
+        }
     }
 
     function _incrementPointCount(address playerAddress) private {
-        unchecked { pointCountByAddress[playerAddress] += POINTS_PER_WIN; }
+        unchecked {
+            pointCountByAddress[playerAddress] += POINTS_PER_WIN;
+        }
     }
 
     function _getPlayerAddress(uint256 gameId, uint256 playerSymbol)

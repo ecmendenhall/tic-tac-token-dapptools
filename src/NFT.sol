@@ -11,7 +11,6 @@ contract NFT is ERC721, Ownable {
     using Strings for uint256;
 
     ITicTacToken public ttt;
-    uint256 internal constant EMPTY = 0;
     uint256 internal constant X = 1;
     uint256 internal constant O = 2;
 
@@ -19,11 +18,11 @@ contract NFT is ERC721, Ownable {
 
     constructor() ERC721("Tic Tac Token NFT", "TTT NFT") {}
 
-    function mint(address to, uint256 tokenId) public onlyOwner {
+    function mint(address to, uint256 tokenId) external onlyOwner {
         _safeMint(to, tokenId);
     }
 
-    function setTTT(ITicTacToken _ttt) public onlyOwner {
+    function setTTT(ITicTacToken _ttt) external onlyOwner {
         emit SetTTT(ttt, _ttt);
         ttt = _ttt;
     }
