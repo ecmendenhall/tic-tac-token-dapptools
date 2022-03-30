@@ -46,7 +46,6 @@ const Game = () => {
               {...gameState}
             />
           )}
-          <GameEventLog gameId={gameId} />
         </div>
       </div>
       <Balances />

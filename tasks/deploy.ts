@@ -16,7 +16,7 @@ export async function deploy(args: Args, hre: HardhatRuntimeEnvironment) : Promi
   const { ethers, network } = hre;
 
   let multicall;
-  if (network.name == "hardhat") {
+  if (["hardhat", "localhost"].includes(network.name)) {
     const Multicall = await ethers.getContractFactory("Multicall");
     multicall = await Multicall.deploy();
     await multicall.deployed();
@@ -42,7 +42,7 @@ export async function deploy(args: Args, hre: HardhatRuntimeEnvironment) : Promi
   await token.transferOwnership(ticTacToken.address);
   await nft.transferOwnership(ticTacToken.address);
 
-  if (network.name == "hardhat") {
+  if (["hardhat", "localhost"].includes(network.name)) {
     const [owner] = await ethers.getSigners();
     await owner.sendTransaction({
       to: "0xe979054eB69F543298406447D8AB6CBBc5791307",

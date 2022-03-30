@@ -18,7 +18,7 @@ contract User is ERC721Holder {
     function markSpace(
         uint256 gameId,
         uint256 i,
-        uint8 symbol
+        uint256 symbol
     ) public {
         ttt.markSpace(gameId, i, symbol);
     }

@@ -4,9 +4,9 @@ pragma solidity ^0.8.0;
 import "./utils/TicTacTokenTest.sol";
 
 contract TestTTT is TicTacTokenTest {
-    uint8 internal constant EMPTY = 0;
-    uint8 internal constant X = 1;
-    uint8 internal constant O = 2;
+    uint256 internal constant EMPTY = 0;
+    uint256 internal constant X = 1;
+    uint256 internal constant O = 2;
 
     function setUp() public override {
         super.setUp();
@@ -29,7 +29,7 @@ contract TestTTT is TicTacTokenTest {
     }
 
     function test_get_board() public {
-        uint8[9] memory expected = [
+        uint256[9] memory empty = [
             EMPTY,
             EMPTY,
             EMPTY,
@@ -40,7 +40,26 @@ contract TestTTT is TicTacTokenTest {
             EMPTY,
             EMPTY
         ];
-        uint8[9] memory actual = ttt.board(1);
+        uint256[9] memory actual = ttt.board(1);
+        for (uint256 i = 0; i < 9; i++) {
+            assertEq(actual[i], empty[i]);
+        }
+        playerX.markSpace(1, 1, X);
+        playerO.markSpace(1, 0, O);
+        playerO.markSpace(1, 7, X);
+        playerO.markSpace(1, 3, O);
+        uint256[9] memory expected = [
+            O,
+            X,
+            EMPTY,
+            O,
+            EMPTY,
+            EMPTY,
+            EMPTY,
+            X,
+            EMPTY
+        ];
+        actual = ttt.board(1);
         for (uint256 i = 0; i < 9; i++) {
             assertEq(actual[i], expected[i]);
         }
@@ -87,6 +106,15 @@ contract TestTTT is TicTacTokenTest {
         assertEq(ttt.winner(1), X);
     }
 
+    function testFail_no_moves_after_game_over() public {
+        playerX.markSpace(1, 0, X);
+        playerO.markSpace(1, 3, O);
+        playerX.markSpace(1, 1, X);
+        playerO.markSpace(1, 4, O);
+        playerX.markSpace(1, 2, X);
+        playerX.markSpace(1, 8, O);
+    }
+
     function test_checks_for_vertical_win() public {
         playerX.markSpace(1, 1, X);
         playerO.markSpace(1, 0, O);
@@ -114,6 +142,17 @@ contract TestTTT is TicTacTokenTest {
         playerX.markSpace(1, 5, X);
         playerO.markSpace(1, 6, O);
         assertEq(ttt.winner(1), O);
+    }
+
+    function test_checks_for_antidiagonal_win_multiple_moves() public {
+        playerX.markSpace(1, 4, X);
+        playerO.markSpace(1, 7, O);
+        playerX.markSpace(1, 5, X);
+        playerO.markSpace(1, 8, O);
+        playerX.markSpace(1, 2, X);
+        playerO.markSpace(1, 3, O);
+        playerO.markSpace(1, 6, X);
+        assertEq(ttt.winner(1), X);
     }
 
     function test_returns_zero_on_no_winner() public {

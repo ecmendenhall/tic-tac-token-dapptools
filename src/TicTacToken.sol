@@ -88,12 +88,13 @@ contract TicTacToken {
     function markSpace(
         uint256 gameId,
         uint256 i,
-        uint8 symbol
+        uint256 symbol
     ) external requirePlayers(gameId) {
         require(_validSpace(i), "Invalid space");
         require(_validSymbol(symbol), "Invalid symbol");
         require(_validTurn(gameId, symbol), "Not your turn");
         require(_emptySpace(gameId, i), "Already marked");
+        require(winner(gameId) == 0, "Game over");
 
         unchecked {
             _game(gameId).turns++;
@@ -114,7 +115,7 @@ contract TicTacToken {
     function _setSymbol(
         uint256 gameId,
         uint256 i,
-        uint8 symbol
+        uint256 symbol
     ) internal {
         Game storage game = _game(gameId);
         if (symbol == X) {
@@ -129,20 +130,15 @@ contract TicTacToken {
         return bitMap | (uint16(1) << uint16(i));
     }
 
-    function board(uint256 gameId) external view returns (uint8[9] memory) {
+    function board(uint256 gameId) external view returns (uint256[9] memory) {
         Game memory game = _game(gameId);
-        uint16 playerXBitmap = game.playerXBitmap;
-        uint16 playerOBitmap = game.playerOBitmap;
-        uint16 nonEmptySpaces = playerXBitmap | playerOBitmap;
-        uint8[9] memory boardArray;
+        uint256[9] memory boardArray;
         for (uint256 i = 0; i < 9; ) {
-            if (_readBit(nonEmptySpaces, i) != 0) {
-                if (_readBit(playerXBitmap, i) == 1) {
-                    boardArray[i] = uint8(X);
-                }
-                if (_readBit(playerOBitmap, i) == 1) {
-                    boardArray[i] = uint8(O);
-                }
+            if (_readBit(game.playerXBitmap, i) != 0) {
+                boardArray[i] = X;
+            }
+            if (_readBit(game.playerOBitmap, i) != 0) {
+                boardArray[i] = O;
             }
             unchecked {
                 ++i;
@@ -194,9 +190,9 @@ contract TicTacToken {
         uint16 playerXBitmap = game.playerXBitmap;
         uint16 playerOBitmap = game.playerOBitmap;
         for (uint256 i = 0; i < wins.length; ) {
-            if (wins[i] == playerXBitmap) {
+            if (wins[i] == (playerXBitmap & wins[i])) {
                 return X;
-            } else if (wins[i] == playerOBitmap) {
+            } else if (wins[i] == (playerOBitmap & wins[i])) {
                 return O;
             }
             unchecked {

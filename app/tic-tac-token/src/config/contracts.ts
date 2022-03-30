@@ -14,7 +14,7 @@ const contracts = {
         "function winner(uint256 gameId) view returns (uint256)",
         "function getGamesByAddress(address player) view returns (uint256[])",
         "event NewGame(address indexed playerX, address indexed playerO, uint256 gameId)",
-        "event MarkSpace(address indexed player, uint256 indexed gameId, uint256 position, uint256 symbol, uint256[9] board)",
+        "event MarkSpace(address indexed player, uint256 indexed gameId, uint256 position, uint256 symbol)",
         "event Win(address indexed winner, uint256 gameId)",
       ]),
     },
@@ -39,7 +39,7 @@ const contracts = {
         "function winner(uint256 gameId) view returns (uint256)",
         "function getGamesByAddress(address player) view returns (uint256[])",
         "event NewGame(address indexed playerX, address indexed playerO, uint256 gameId)",
-        "event MarkSpace(address indexed player, uint256 indexed gameId, uint256 position, uint256 symbol, uint256[9] board)",
+        "event MarkSpace(address indexed player, uint256 indexed gameId, uint256 position, uint256 symbol)",
         "event Win(address indexed winner, uint256 gameId)",
       ]),
     },
@@ -54,7 +54,7 @@ const contracts = {
   },
   [Mumbai.chainId]: {
     game: {
-      address: "0xC3F580d358ba51b73f153aEaa51A34363D9A4da3",
+      address: "0xC52b309ffE8284c84AEAa2e258b8Df974EE54Ff9",
       abi: new Interface([
         "function board(uint256 i) returns (uint256[9] memory)",
         "function currentTurn(uint256 gameId) returns (uint256)",
@@ -64,16 +64,16 @@ const contracts = {
         "function winner(uint256 gameId) view returns (uint256)",
         "function getGamesByAddress(address player) view returns (uint256[])",
         "event NewGame(address indexed playerX, address indexed playerO, uint256 gameId)",
-        "event MarkSpace(address indexed player, uint256 indexed gameId, uint256 position, uint256 symbol, uint256[9] board)",
+        "event MarkSpace(address indexed player, uint256 indexed gameId, uint256 position, uint256 symbol)",
         "event Win(address indexed winner, uint256 gameId)",
       ]),
     },
     token: {
-      address: "0xAA318059640f0f96ba9112AB5Bdf9F06Fe6dC155",
+      address: "0xbE2e4E046111927A0aEfb814068b911833A04c90",
       abi: new Interface([]),
     },
     nft: {
-      address: "0xBcB5e45567e30083BD7eA645D1Ce93a5A1A5c0b9",
+      address: "0xFFE71959EFE57370C4Df2238f6DD086AedaE5f82",
       abi: new Interface([]),
     },
   },

@@ -28,7 +28,7 @@ const Board = ({
 
   const getClassName = (marker: Marker, idx: number) => {
     const baseClass =
-      "group w-32 h-32 text-4xl text-center flex items-center justify-center border";
+      "group w-32 h-32 text-4xl text-center flex items-center justify-center border cursor-pointer";
     if (idx == selectedSpace && !winner) {
       return `${baseClass} border-purple-400 border-4`;
     } else {
