@@ -42,11 +42,13 @@ export async function deploy(args: Args, hre: HardhatRuntimeEnvironment) : Promi
   await token.transferOwnership(ticTacToken.address);
   await nft.transferOwnership(ticTacToken.address);
 
-  const [owner] = await ethers.getSigners();
-  await owner.sendTransaction({
-    to: "0xe979054eB69F543298406447D8AB6CBBc5791307",
-    value: ethers.utils.parseEther("1000"),
-  });
+  if (network.name == "hardhat") {
+    const [owner] = await ethers.getSigners();
+    await owner.sendTransaction({
+      to: "0xe979054eB69F543298406447D8AB6CBBc5791307",
+      value: ethers.utils.parseEther("1000"),
+    });
+  }
 
   return { multicall, token, nft, ticTacToken }
 }
