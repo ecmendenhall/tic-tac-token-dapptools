@@ -16,7 +16,7 @@ contract NFT is ERC721, Ownable {
 
     event SetTTT(ITicTacToken oldTTT, ITicTacToken newTTT);
 
-    constructor() ERC721("Tic Tac Token NFT", "TTT NFT") {}
+    constructor() ERC721("Tic Tac Token NFT (Genesis Block)", "TTT.0 NFT") {}
 
     function mint(address to, uint256 tokenId) external onlyOwner {
         _safeMint(to, tokenId);

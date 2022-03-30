@@ -5,16 +5,16 @@ import "./utils/TokenTest.sol";
 
 contract TestToken is TokenTest {
     function test_has_name() public {
-        assertEq(token.name(), "Tic Tac Token");
+        assertEq(token.name(), "Tic Tac Token (Genesis Block)");
     }
 
     function test_has_symbol() public {
-        assertEq(token.symbol(), "TTT");
+        assertEq(token.symbol(), "TTT.0");
     }
 
-    //function test_has_decimals() public {
-    //    assertEq(token.decimals(), 18);
-    //}
+    function test_has_decimals() public {
+        assertEq(token.decimals(), 18);
+    }
 
     function test_initial_total_supply_is_zero() public {
         assertEq(token.totalSupply(), 0);
