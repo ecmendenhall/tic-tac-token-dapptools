@@ -9,16 +9,19 @@ interface Contracts {
     token: Token;
     nft: NFT;
     ticTacToken: TicTacToken;
-    multicall: Multicall;
+    multicall?: Multicall;
 }
 
 export async function deploy(args: Args, hre: HardhatRuntimeEnvironment) : Promise<Contracts> {
-  const { ethers } = hre;
-  
-  const Multicall = await ethers.getContractFactory("Multicall");
-  const multicall = await Multicall.deploy();
-  await multicall.deployed();
-  console.log("Multicall deployed to: ", multicall.address);
+  const { ethers, network } = hre;
+
+  let multicall;
+  if (network.name == "hardhat") {
+    const Multicall = await ethers.getContractFactory("Multicall");
+    multicall = await Multicall.deploy();
+    await multicall.deployed();
+    console.log("Multicall deployed to: ", multicall.address);
+  }
 
   const Token = await ethers.getContractFactory("Token");
   const token = await Token.deploy();
