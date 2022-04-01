@@ -54,6 +54,7 @@ contract TicTacToken {
     }
 
     function newGame(address _playerX, address _playerO) external {
+        require(_playerX != _playerO, "Invalid opponent");
         unchecked {
             nextGameId++;
         }
@@ -112,24 +113,6 @@ contract TicTacToken {
         }
     }
 
-    function _setSymbol(
-        uint256 gameId,
-        uint256 i,
-        uint256 symbol
-    ) internal {
-        Game storage game = _game(gameId);
-        if (symbol == X) {
-            game.playerXBitmap = _setBit(game.playerXBitmap, i);
-        }
-        if (symbol == O) {
-            game.playerOBitmap = _setBit(game.playerOBitmap, i);
-        }
-    }
-
-    function _setBit(uint16 bitMap, uint256 i) internal pure returns (uint16) {
-        return bitMap | (uint16(1) << uint16(i));
-    }
-
     function board(uint256 gameId) external view returns (uint256[9] memory) {
         Game memory game = _game(gameId);
         uint256[9] memory boardArray;
@@ -155,6 +138,14 @@ contract TicTacToken {
         return _checkWins(gameId);
     }
 
+    function winCount(address playerAddress) external view returns (uint256) {
+        return winCountByAddress[playerAddress];
+    }
+
+    function pointCount(address playerAddress) external view returns (uint256) {
+        return pointCountByAddress[playerAddress];
+    }
+
     function _validSpace(uint256 i) internal pure returns (bool) {
         return i < 9;
     }
@@ -169,6 +160,24 @@ contract TicTacToken {
 
     function _readBit(uint16 bitMap, uint256 i) internal pure returns (uint16) {
         return bitMap & (uint16(1) << uint16(i));
+    }
+
+    function _setBit(uint16 bitMap, uint256 i) internal pure returns (uint16) {
+        return bitMap | (uint16(1) << uint16(i));
+    }
+
+    function _setSymbol(
+        uint256 gameId,
+        uint256 i,
+        uint256 symbol
+    ) internal {
+        Game storage game = _game(gameId);
+        if (symbol == X) {
+            game.playerXBitmap = _setBit(game.playerXBitmap, i);
+        }
+        if (symbol == O) {
+            game.playerOBitmap = _setBit(game.playerOBitmap, i);
+        }
     }
 
     function _emptySpace(uint256 gameId, uint256 i)
@@ -200,14 +209,6 @@ contract TicTacToken {
             }
         }
         return 0;
-    }
-
-    function winCount(address playerAddress) external view returns (uint256) {
-        return winCountByAddress[playerAddress];
-    }
-
-    function pointCount(address playerAddress) external view returns (uint256) {
-        return pointCountByAddress[playerAddress];
     }
 
     function _incrementWinCount(address playerAddress) private {

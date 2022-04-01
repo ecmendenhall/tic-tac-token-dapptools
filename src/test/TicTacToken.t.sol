@@ -312,6 +312,10 @@ contract TestTTT is TicTacTokenTest {
         assertEq(turns, 0);
     }
 
+    function testFail_require_distinct_player_address() public {
+        ttt.newGame(address(playerX), address(playerX));
+    }
+
     function test_issues_tokens_to_players_on_new_game() public {
         assertEq(nft.balanceOf(address(playerX)), 1);
         assertEq(nft.balanceOf(address(playerO)), 1);

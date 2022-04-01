@@ -54,7 +54,7 @@ const contracts = {
   },
   [Mumbai.chainId]: {
     game: {
-      address: "0x1e72455A106361218C85D37A637cFc511f3C7480",
+      address: "0xAD10E738D90362Cb3f8f0ABc4df8C9014386661E",
       abi: new Interface([
         "function board(uint256 i) returns (uint256[9] memory)",
         "function currentTurn(uint256 gameId) returns (uint256)",
@@ -69,11 +69,11 @@ const contracts = {
       ]),
     },
     token: {
-      address: "0x5a4652354b385D7a2Cd4d40d0ab8a82bb903E1e0",
+      address: "0xaFb1227a8AEc8600f025B525c95b2D4b4FD9D2F5",
       abi: new Interface([]),
     },
     nft: {
-      address: "0x2338E555B02ACda7186f741B3f714EEb9B52CdD5",
+      address: "0xDDBeF15325b928343a945aD943c80362D8438D25",
       abi: new Interface([]),
     },
   },
