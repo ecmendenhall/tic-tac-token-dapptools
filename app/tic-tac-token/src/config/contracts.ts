@@ -29,7 +29,7 @@ const contracts = {
   },
   [Polygon.chainId]: {
     game: {
-      address: "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
+      address: "0x25E014D7485039CE08c6b39314453Daa3AfC7DcC",
       abi: new Interface([
         "function board(uint256 i) returns (uint256[9] memory)",
         "function currentTurn(uint256 gameId) returns (uint256)",
@@ -44,11 +44,11 @@ const contracts = {
       ]),
     },
     token: {
-      address: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+      address: "0xd42DAC0AEc5a0D4436B92b3372E6A88E4Aa10CE0",
       abi: new Interface([]),
     },
     nft: {
-      address: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+      address: "0x2a6dB1CeF94C00897E113ce6299899b0e7081CD7",
       abi: new Interface([]),
     },
   },
