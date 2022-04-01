@@ -3,10 +3,7 @@ import { BigNumber } from "ethers";
 import { parseUnits } from "ethers/lib/utils";
 import React, { useState } from "react";
 import Button from "./Button";
-import {
-  shortenIfAddress,
-  useEthers,
-} from "@usedapp/core";
+import { shortenIfAddress, useEthers } from "@usedapp/core";
 
 interface Props {
   gameId: string | undefined;
@@ -57,6 +54,7 @@ const MarkSpace = ({
         >
           Mark space
         </Button>
+        <div className="my-2 text-red-500">{markSpaceState.errorMessage}</div>
       </div>
     );
   } else {

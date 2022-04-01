@@ -101,10 +101,10 @@ const contracts = {
 };
 
 export function getContracts(chainId: ChainId | undefined) {
-  if(chainId === undefined) {
+  if (chainId === undefined) {
     return contracts[Hardhat.chainId];
   } else {
-  return contracts[chainId];
+    return contracts[chainId];
   }
 }
 

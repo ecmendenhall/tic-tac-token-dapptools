@@ -1,5 +1,10 @@
 import { EtherscanProvider } from "@ethersproject/providers";
-import { useBlockNumber, useContractCall, useContractFunction, useEthers } from "@usedapp/core";
+import {
+  useBlockNumber,
+  useContractCall,
+  useContractFunction,
+  useEthers,
+} from "@usedapp/core";
 import { getDefaultProvider, BigNumber, Contract, ethers } from "ethers";
 import { parseUnits } from "ethers/lib/utils";
 import { useEffect, useState } from "react";
@@ -90,34 +95,36 @@ export function useGameHistory(gameId: string | undefined) {
   const contracts = getContracts(chainId);
   const blockNumber = useBlockNumber();
 
-  const [gameHistory, setGameHistory] = useState<(MarkSpaceEvent | undefined)[]>([]);
+  const [gameHistory, setGameHistory] = useState<
+    (MarkSpaceEvent | undefined)[]
+  >([]);
 
   useEffect(() => {
     if (gameId && library) {
-    const loadGameHistory = async () => {
-      const game = new Contract(
-        contracts.game.address,
-        contracts.game.abi,
-        library
-      );
-      const eventLogs = await game.queryFilter(
-        game.filters.MarkSpace(null, parseUnits(gameId, "wei"))
-      );
-      console.log("EventLogs: ", eventLogs);
-      const events = eventLogs.map((log) => {
-        if (log.args) {
-          return {
-            player: log.args.player,
-            position: log.args.position,
-            symbol: numberToMarker(log.args.symbol),
-          };
-        }
-      });
-      console.log("Events: ", events);
-      setGameHistory(events);
-    };
-    loadGameHistory();
-  }
+      const loadGameHistory = async () => {
+        const game = new Contract(
+          contracts.game.address,
+          contracts.game.abi,
+          library
+        );
+        const eventLogs = await game.queryFilter(
+          game.filters.MarkSpace(null, parseUnits(gameId, "wei"))
+        );
+        console.log("EventLogs: ", eventLogs);
+        const events = eventLogs.map((log) => {
+          if (log.args) {
+            return {
+              player: log.args.player,
+              position: log.args.position,
+              symbol: numberToMarker(log.args.symbol),
+            };
+          }
+        });
+        console.log("Events: ", events);
+        setGameHistory(events);
+      };
+      loadGameHistory();
+    }
   }, [gameId, library, blockNumber]);
 
   return gameHistory;

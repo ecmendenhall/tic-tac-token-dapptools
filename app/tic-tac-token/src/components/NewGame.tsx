@@ -27,6 +27,7 @@ const NewGame = () => {
       <Button onClick={() => sendNewGame(account, playerTwoAddress)}>
         New Game
       </Button>
+      <div className="my-2 text-red-500">{newGameState.errorMessage}</div>
     </div>
   );
 };

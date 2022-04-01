@@ -11,9 +11,21 @@ const Balances = () => {
 
   return (
     <div className="fixed top-12 left-12 bg-blue-50 rounded-md shadow p-2">
-      {etherBalance && <p><strong>ETH:</strong> {formatEther(etherBalance).slice(0, 6)}</p>}
-      {tttBalance && <p><strong>TTT:</strong> {formatEther(tttBalance)}</p>}
-      {nftBalance && <p><strong>Games:</strong> {formatUnits(nftBalance, "wei")}</p>}
+      {etherBalance && (
+        <p>
+          <strong>ETH:</strong> {formatEther(etherBalance).slice(0, 6)}
+        </p>
+      )}
+      {tttBalance && (
+        <p>
+          <strong>TTT:</strong> {formatEther(tttBalance)}
+        </p>
+      )}
+      {nftBalance && (
+        <p>
+          <strong>Games:</strong> {formatUnits(nftBalance, "wei")}
+        </p>
+      )}
     </div>
   );
 };

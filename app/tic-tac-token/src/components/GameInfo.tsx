@@ -1,9 +1,5 @@
 import { BigNumber } from "ethers";
-import {
-  Mainnet,
-  shortenIfAddress,
-  useEthers,
-} from "@usedapp/core";
+import { Mainnet, shortenIfAddress, useEthers } from "@usedapp/core";
 
 interface Props {
   playerX: string;
@@ -19,13 +15,17 @@ const GameInfo = ({ playerX, playerO, turns }: Props) => {
       <p className="mb-1">
         Player X:{" "}
         <a href={Mainnet.getExplorerAddressLink(playerX)}>
-          <pre className="inline bg-blue-50 p-0.5">{shortenIfAddress(playerX)}</pre>
+          <pre className="inline bg-blue-50 p-0.5">
+            {shortenIfAddress(playerX)}
+          </pre>
         </a>
       </p>
       <p>
         Player O:{" "}
         <a href={Mainnet.getExplorerAddressLink(playerO)}>
-          <pre className="inline bg-blue-50 p-0.5">{shortenIfAddress(playerO)}</pre>
+          <pre className="inline bg-blue-50 p-0.5">
+            {shortenIfAddress(playerO)}
+          </pre>
         </a>
       </p>
     </div>
