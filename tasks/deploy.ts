@@ -38,6 +38,9 @@ export async function deploy(args: Args, hre: HardhatRuntimeEnvironment) : Promi
   await ticTacToken.deployed();
   console.log("Tic Tac Token deployed to: ", ticTacToken.address);
 
+  console.log("Setting TTT...");
+  await nft.setTTT(ticTacToken.address);
+
   console.log("Transferring owner...");
   await token.transferOwnership(ticTacToken.address);
   await nft.transferOwnership(ticTacToken.address);
